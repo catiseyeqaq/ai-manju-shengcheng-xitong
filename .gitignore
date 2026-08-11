@@ -1,0 +1,47 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+
+# Runtime / logs / outputs
+logs/
+run/
+output/
+input/
+temp/
+*.log
+*.pid
+
+# Large model weights (never commit)
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+models/
+models_backup/
+wheels/
+
+# Local ComfyUI checkout (pull upstream separately)
+ComfyUI/
+
+# Secrets
+*.pem
+*.key
+credentials*
+.git-credentials
