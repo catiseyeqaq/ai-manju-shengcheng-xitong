@@ -1,0 +1,91 @@
+# 硬件探测快照 (2026-08-11T18:44:14+08:00)
+
+## PPU / 加速卡
+Tue Aug 11 18:44:14 2026
++-------------------------------------------------------------------------------+
+| PPU-SMI 1.28          Driver Version: 1.5.1-1d747a  HGGC Version: 13.0        |
++---------------------------------+----------------------+----------------------+
+| PPU  Name        Persistence M. | Bus-Id               | Volatile Uncorr. ECC |
+| Fan  Temp  Perf   Pwr:Usage/Cap | Memory-Usage         | PPU-Util  Compute M. |
+|                                 |                      |               MIG M. |
++=================================+======================+======================+
+| 0  PPU-ZW810E        N/A        | 00000000:A8:00.0     |                    0 |
+| N/A  57C   N/A      312W / 400W | 59234MiB / 98304MiB  |   92%       Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 1  PPU-ZW810E        N/A        | 00000000:A7:00.0     |                    0 |
+| N/A  59C   N/A      308W / 400W | 59194MiB / 98304MiB  |   76%       Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 2  PPU-ZW810E        N/A        | 00000000:A9:00.0     |                    0 |
+| N/A  51C   N/A      295W / 400W | 59210MiB / 98304MiB  |   56%       Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 3  PPU-ZW810E        N/A        | 00000000:65:00.0     |                    0 |
+| N/A  51C   N/A      300W / 400W | 59162MiB / 98304MiB  |   66%       Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 4  PPU-ZW810E        N/A        | 00000000:E8:00.0     |                    0 |
+| N/A  56C   N/A      308W / 400W | 59034MiB / 98304MiB  |   100%      Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 5  PPU-ZW810E        N/A        | 00000000:26:00.0     |                    0 |
+| N/A  53C   N/A      297W / 400W | 59178MiB / 98304MiB  |   100%      Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 6  PPU-ZW810E        N/A        | 00000000:24:00.0     |                    0 |
+| N/A  60C   N/A      297W / 400W | 59082MiB / 98304MiB  |   92%       Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+| 7  PPU-ZW810E        N/A        | 00000000:23:00.0     |                    0 |
+| N/A  56C   N/A      304W / 400W | 59002MiB / 98304MiB  |   100%      Default  |
+|                                 |                      |             Disabled |
++---------------------------------+----------------------+----------------------+
+
++-------------------------------------------------------------------------------+
+| Processes:                                                                    |
+| PPU    GI   CI   PID      Type  Process name                       PPU Memory |
+|        ID   ID                                                     Usage      |
++===============================================================================+
+| 0      N/A  N/A  2671818  C     /root/miniconda3/envs/Agent/bin/...     32MiB |
+| 0      N/A  N/A  2686949  C     /root/miniconda3/envs/Agent/bin/...  59106MiB |
+| 1      N/A  N/A  2686950  C     /root/miniconda3/envs/Agent/bin/...  59090MiB |
+| 2      N/A  N/A  2686951  C     /root/miniconda3/envs/Agent/bin/...  59106MiB |
+| 3      N/A  N/A  2686952  C     /root/miniconda3/envs/Agent/bin/...  59058MiB |
+| 4      N/A  N/A  2686953  C     /root/miniconda3/envs/Agent/bin/...  58930MiB |
+| 5      N/A  N/A  2686954  C     /root/miniconda3/envs/Agent/bin/...  59074MiB |
+| 6      N/A  N/A  2686955  C     /root/miniconda3/envs/Agent/bin/...  58978MiB |
+| 7      N/A  N/A  2686956  C     /root/miniconda3/envs/Agent/bin/...  58898MiB |
++-------------------------------------------------------------------------------+
+
+## CPU
+Architecture:                       x86_64
+CPU(s):                             256
+On-line CPU(s) list:                0-255
+Vendor ID:                          HygonGenuine
+Model name:                         Hygon C86-4G (OPN:7490)
+Thread(s) per core:                 2
+Core(s) per socket:                 64
+Socket(s):                          2
+NUMA node0 CPU(s):                  0-15,128-143
+NUMA node1 CPU(s):                  16-31,144-159
+NUMA node2 CPU(s):                  32-47,160-175
+NUMA node3 CPU(s):                  48-63,176-191
+NUMA node4 CPU(s):                  64-79,192-207
+NUMA node5 CPU(s):                  80-95,208-223
+NUMA node6 CPU(s):                  96-111,224-239
+NUMA node7 CPU(s):                  112-127,240-255
+
+## Memory
+               total        used        free      shared  buff/cache   available
+Mem:           1.5Ti       119Gi       1.1Ti        14Gi       289Gi       1.4Ti
+Swap:             0B          0B          0B
+
+## OS
+Linux nb-229a752a0004c0437c-bdc556874-kphmb 5.10.134-17.2.al8.x86_64 #1 SMP Fri Aug 9 15:49:42 CST 2024 x86_64 x86_64 x86_64 GNU/Linux
+PRETTY_NAME="Ubuntu 24.04.2 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.2 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
