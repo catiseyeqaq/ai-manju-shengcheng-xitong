@@ -172,6 +172,7 @@ ai-manju-shengcheng-xitong/
 └── docs/
     ├── hardware_snapshot.txt
     ├── models.md
+    ├── deployment.md
     └── commercial.md
 ```
 
