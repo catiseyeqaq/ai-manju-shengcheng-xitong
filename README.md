@@ -30,9 +30,9 @@
 
 电影级关键帧（film_coherent 连贯片管线产出，同一角色跨镜头）：
 
-| 镜头 1 · 咖啡馆外 | 镜头 4 · 超市货架 |
+| 镜头 1 · 咖啡馆外 | 镜头 2 · 雨夜街头 |
 |:---:|:---:|
-| <img src="showcase/frames/01_cafe_00001_.png" width="420" /> | <img src="showcase/frames/04_aisle_00001_.png" width="420" /> |
+| <img src="showcase/frames/01_cafe_00001_.png" width="420" /> | <img src="showcase/frames/02_walk_00001_.png" width="420" /> |
 
 场景一致性底版（film_coherent 管线产出，用于多镜头场景统一）：
 
