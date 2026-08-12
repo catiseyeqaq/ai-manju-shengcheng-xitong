@@ -13,9 +13,9 @@
 当前阶段已具备：
 
 - MiniMax-H3 BF16 权重本地加载（约 129G）
-- 3 套可直接导入的模板工作流（T2V / I2V / R2V）
-- ComfyUI `0.31.0` 一键启停脚本
-- 基于 SGLang 的 Qwen3.6-35B-A3B 提示词润色自定义节点
+- 7 套可直接导入的模板工作流（视频 T2V / I2V / R2V + 电影级关键帧/分镜管线）
+- ComfyUI `0.31.0` 一键启停脚本（含 PPU 加速参数与注意力后端切换）
+- 基于 SGLang 的 Qwen3.6-35B-A3B 提示词润色自定义节点（已接入 MiniMax 官方 H3 提示词写作技能）
 
 ---
 
@@ -26,6 +26,18 @@
 <video src="https://raw.githubusercontent.com/catiseyeqaq/ai-manju-shengcheng-xitong/main/showcase/story_rain_day_v2_full.mp4" controls width="100%"></video>
 
 > 文件：[`showcase/story_rain_day_v2_full.mp4`](showcase/story_rain_day_v2_full.mp4)（约 39MB）；生成素材版权归原作者所有，未经授权不得转载或商用。
+
+电影级关键帧（H3 文生关键帧工作流产出）：
+
+| 关键帧 1 | 关键帧 2 |
+|:---:|:---:|
+| <img src="showcase/frames/keyframe_00001_.png" width="420" /> | <img src="showcase/frames/keyframe_00002_.png" width="420" /> |
+
+场景一致性底版（film_coherent 管线产出，用于多镜头场景统一）：
+
+| 咖啡馆 | 街道 | 市场 |
+|:---:|:---:|:---:|
+| <img src="showcase/frames/plate_cafe.png" width="280" /> | <img src="showcase/frames/plate_street.png" width="280" /> | <img src="showcase/frames/plate_market.png" width="280" /> |
 
 ---
 
@@ -137,15 +149,19 @@ flowchart LR
 - ComfyUI 版本：`0.31.0`（`comfyui_version.py`）
 - WebUI / API 默认：`http://0.0.0.0:8188`
 - 额外模型路径：`configs/extra_model_paths.yaml`
-- 自定义节点：`custom_nodes/minimax_h3_prompt_polish`（`MiniMax H3 提示词润色 (Qwen)`）
+- 自定义节点：`custom_nodes/minimax_h3_prompt_polish`（`MiniMax H3 提示词润色 (Qwen)`），内置 MiniMax 官方 H3 提示词写作技能参考（`skills/references/`），按模式（T2VA/I2VA/FL2VA/L2VA/Ref2VA）套用官方字段名、镜头标记与音频段落规范改写提示词
 
-### 模板工作流（3 个）
+### 模板工作流（7 个）
 
 | 文件 | 模式 | 用途 |
 |---|---|---|
-| [`workflows/video_minimax_h3_t2v_bf16.json`](workflows/video_minimax_h3_t2v_bf16.json) | Text → Video | 文生视频 |
-| [`workflows/video_minimax_h3_i2v_bf16.json`](workflows/video_minimax_h3_i2v_bf16.json) | Image → Video | 图生视频（首/尾帧） |
-| [`workflows/video_minimax_h3_r2v_bf16.json`](workflows/video_minimax_h3_r2v_bf16.json) | Reference → Video | 参考图一致性生成 |
+| [`workflows/video_minimax_h3_t2v_bf16.json`](workflows/video_minimax_h3_t2v_bf16.json) | Text → Video | 文生视频（BF16） |
+| [`workflows/video_minimax_h3_i2v_bf16.json`](workflows/video_minimax_h3_i2v_bf16.json) | Image → Video | 图生视频（首/尾帧，BF16） |
+| [`workflows/video_minimax_h3_r2v_bf16.json`](workflows/video_minimax_h3_r2v_bf16.json) | Reference → Video | 参考图一致性生成（BF16） |
+| [`workflows/video_minimax_h3_t2v.json`](workflows/video_minimax_h3_t2v.json) | Text → Video | 文生视频（通用版） |
+| [`workflows/h3_text_prompt_keyframe_video_bf16.json`](workflows/h3_text_prompt_keyframe_video_bf16.json) | Text → 关键帧 → Video | 电影级关键帧分镜管线 |
+| [`workflows/film_zh2prompt_flux_h3.json`](workflows/film_zh2prompt_flux_h3.json) | 中文 → 提示词 → Flux 出图 | 中文草稿转影视级提示词并出图 |
+| [`workflows/film_master_zh_prompt_flux_face_upscale_h3.json`](workflows/film_master_zh_prompt_flux_face_upscale_h3.json) | 出图 + 面部修复 + 放大 | 电影级母版出图（含面部修复与高清放大） |
 
 在 ComfyUI 中：`Load` → 选择上述 JSON → 修改提示词 / 分辨率 / 上传参考图 → `Queue Prompt`。
 
@@ -166,8 +182,8 @@ ai-manju-shengcheng-xitong/
 ├── .gitignore
 ├── configs/
 │   └── extra_model_paths.yaml      # MiniMax-H3 路径注册示例
-├── workflows/                      # 3 套 BF16 模板工作流
-├── showcase/                       # 成果展示视频
+├── workflows/                      # 7 套模板工作流（视频 + 电影级关键帧/分镜）
+├── showcase/                       # 成果展示（视频 + 关键帧/场景底版）
 ├── scripts/                        # ComfyUI / SGLang 启停与注册
 │   ├── comfyui_start.py
 │   ├── comfyui_start_bg.py
