@@ -1,0 +1,1430 @@
+{
+  "id": "8d0b8c9a-bab9-4fb0-b2a6-eeb5203077ae",
+  "revision": 0,
+  "last_node_id": 1111,
+  "last_link_id": 26,
+  "nodes": [
+    {
+      "id": 1011,
+      "type": "VAELoader",
+      "pos": [
+        780,
+        1020
+      ],
+      "size": [
+        640,
+        70
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            2,
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_video_vae_fp16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_video_vae_fp16.safetensors"
+      ]
+    },
+    {
+      "id": 1024,
+      "type": "VAELoader",
+      "pos": [
+        780,
+        1160
+      ],
+      "size": [
+        650,
+        70
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_audio_vae_fp32.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ]
+    },
+    {
+      "id": 1023,
+      "type": "VAEDecodeAudio",
+      "pos": [
+        2770,
+        970
+      ],
+      "size": [
+        230,
+        60
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 18
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "AUDIO",
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecodeAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 1010,
+      "type": "VAEDecode",
+      "pos": [
+        2770,
+        850
+      ],
+      "size": [
+        230,
+        60
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 17
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 1017,
+      "type": "KSamplerSelect",
+      "pos": [
+        2020,
+        950
+      ],
+      "size": [
+        370,
+        70
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "SAMPLER",
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
+      },
+      "widgets_values": [
+        "res_multistep"
+      ]
+    },
+    {
+      "id": 1009,
+      "type": "BasicScheduler",
+      "pos": [
+        2020,
+        1100
+      ],
+      "size": [
+        370,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "SIGMAS",
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicScheduler"
+      },
+      "widgets_values": [
+        "simple",
+        20,
+        1
+      ]
+    },
+    {
+      "id": 1014,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        2440,
+        860
+      ],
+      "size": [
+        230,
+        140
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "noise",
+          "name": "noise",
+          "type": "NOISE",
+          "link": 4
+        },
+        {
+          "localized_name": "guider",
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 5
+        },
+        {
+          "localized_name": "sampler",
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 6
+        },
+        {
+          "localized_name": "sigmas",
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 7
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "output",
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            17,
+            18
+          ]
+        },
+        {
+          "localized_name": "denoised_output",
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced"
+      },
+      "widgets_values": [],
+      "title": "采样 Sampler"
+    },
+    {
+      "id": 1016,
+      "type": "BasicGuider",
+      "pos": [
+        2020,
+        820
+      ],
+      "size": [
+        360,
+        60
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "localized_name": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "GUIDER",
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicGuider"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 1006,
+      "type": "UNETLoader",
+      "pos": [
+        780,
+        670
+      ],
+      "size": [
+        640,
+        90
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3,
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "minimax_h3_fl2va_pruned_bf16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_bf16.safetensors",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_fl2va_pruned_bf16.safetensors",
+        "default"
+      ],
+      "title": "H3 UNET fl2va bf16"
+    },
+    {
+      "id": 1013,
+      "type": "CLIPLoader",
+      "pos": [
+        780,
+        830
+      ],
+      "size": [
+        640,
+        120
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "models": [
+          {
+            "name": "qwen3vl_32b_minimax_h3_bf16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_bf16.safetensors",
+            "directory": "text_encoders"
+          }
+        ]
+      },
+      "widgets_values": [
+        "qwen3vl_32b_minimax_h3_bf16.safetensors",
+        "minimax",
+        "default"
+      ],
+      "title": "H3 CLIP Qwen3VL bf16"
+    },
+    {
+      "id": 1015,
+      "type": "RandomNoise",
+      "pos": [
+        2020,
+        660
+      ],
+      "size": [
+        360,
+        90
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "noise_seed",
+          "name": "noise_seed",
+          "type": "INT",
+          "widget": {
+            "name": "noise_seed"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "NOISE",
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise"
+      },
+      "widgets_values": [
+        42,
+        "randomize"
+      ]
+    },
+    {
+      "id": 1091,
+      "type": "CreateVideo",
+      "pos": [
+        3100,
+        890
+      ],
+      "size": [
+        270,
+        110
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 11
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VIDEO",
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            26
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        24,
+        8
+      ],
+      "title": "合成 MP4（画面+音频）"
+    },
+    {
+      "id": 1104,
+      "type": "MiniMaxH3ImageToVideo",
+      "pos": [
+        1510,
+        630
+      ],
+      "size": [
+        430,
+        550
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 13
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        },
+        {
+          "localized_name": "first_frame",
+          "name": "first_frame",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 23
+        },
+        {
+          "localized_name": "last_frame",
+          "name": "last_frame",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 20
+        },
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 24
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 25
+        },
+        {
+          "localized_name": "length",
+          "name": "length",
+          "type": "INT",
+          "widget": {
+            "name": "length"
+          },
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            10
+          ]
+        },
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MiniMaxH3ImageToVideo"
+      },
+      "widgets_values": [
+        "Photorealistic live-action cinema, rainy neon city street at night, East Asian woman in her 30s wearing a trench coat, holding an umbrella, walking slowly past reflections, shallow depth of field, 35mm film look, subtle grain, natural skin texture, cinematic color grade, slow tracking shot following her, soft bokeh headlights.\nAudio: rainfall, distant traffic, low cinematic underscore, soft footsteps on wet pavement.",
+        1344,
+        768,
+        73
+      ],
+      "title": "4) MiniMax-H3 图生视频"
+    },
+    {
+      "id": 1107,
+      "type": "ComfyMathExpression",
+      "pos": [
+        1090,
+        1410
+      ],
+      "size": [
+        360,
+        160
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "a",
+          "localized_name": "values.a",
+          "name": "values.a",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 16
+        },
+        {
+          "label": "b",
+          "localized_name": "values.b",
+          "name": "values.b",
+          "shape": 7,
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "localized_name": "INT",
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            15
+          ]
+        },
+        {
+          "localized_name": "BOOL",
+          "name": "BOOL",
+          "type": "BOOLEAN",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ComfyMathExpression"
+      },
+      "widgets_values": [
+        "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+      ]
+    },
+    {
+      "id": 1111,
+      "type": "PrimitiveFloat",
+      "pos": [
+        780,
+        1410
+      ],
+      "size": [
+        270,
+        70
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "FLOAT",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "title": "时长(秒)",
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat"
+      },
+      "widgets_values": [
+        5.0
+      ]
+    },
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        -2200,
+        -200
+      ],
+      "size": [
+        520,
+        520
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "全链路说明",
+      "properties": {
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [
+        "## MiniMax-H3 全链路（写实电影）\n\n**流程**\n1. **中文镜头** → `MiniMax H3 提示词润色`\n2. **英文提示词** → `PreviewAny` 预览\n3. **首帧/定妆图** → `LoadImage`（当前机器无 SD/Flux 生图权重，先用定妆图/外部生图）\n4. **H3 I2V** → 带声 MP4\n\n**注意**\n- 润色默认 `bypass=true`（8030 没开也能跑；开了 Qwen 润色后关掉 bypass）\n- 视频 VAE 用 `minimax_h3_video_vae_fp16`，音频 VAE 用 `minimax_h3_audio_vae_fp32`\n- 分辨率建议 16:9 + megapixels≈0.98（约 1344×768）\n"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "MiniMaxH3PromptPolish",
+      "pos": [
+        -1600,
+        -150
+      ],
+      "size": [
+        480,
+        340
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "prompt_zh",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt_zh"
+          },
+          "link": null
+        },
+        {
+          "name": "base_url",
+          "type": "STRING",
+          "widget": {
+            "name": "base_url"
+          },
+          "link": null
+        },
+        {
+          "name": "model",
+          "type": "STRING",
+          "widget": {
+            "name": "model"
+          },
+          "link": null
+        },
+        {
+          "name": "temperature",
+          "type": "FLOAT",
+          "widget": {
+            "name": "temperature"
+          },
+          "link": null
+        },
+        {
+          "name": "max_tokens",
+          "type": "INT",
+          "widget": {
+            "name": "max_tokens"
+          },
+          "link": null
+        },
+        {
+          "name": "timeout_sec",
+          "type": "FLOAT",
+          "widget": {
+            "name": "timeout_sec"
+          },
+          "link": null
+        },
+        {
+          "name": "bypass",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "bypass"
+          },
+          "link": null
+        },
+        {
+          "name": "extra_instructions",
+          "type": "STRING",
+          "widget": {
+            "name": "extra_instructions"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "prompt_en",
+          "type": "STRING",
+          "links": [
+            19,
+            20
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1) 中文→电影提示词润色",
+      "properties": {
+        "Node name for S&R": "MiniMaxH3PromptPolish"
+      },
+      "widgets_values": [
+        "写实真人电影质感。雨夜霓虹城市街道，一位30岁东亚女性穿着米色风衣撑伞缓缓走过积水路面，浅景深，35mm胶片，自然皮肤质感，电影调色。镜头缓慢跟拍她的侧脸与脚步。环境声：雨声、远处车流；低沉配乐；皮鞋踩水声。",
+        "http://127.0.0.1:8030/v1",
+        "qwen3.6-fast",
+        0.4,
+        700,
+        120.0,
+        true,
+        "Style: photorealistic live-action cinema, NOT anime, NOT illustration. Keep dialogue/SFX/music in the prompt. Structure with scene + timed shots + camera + audio."
+      ]
+    },
+    {
+      "id": 3,
+      "type": "PreviewAny",
+      "pos": [
+        -1050,
+        -150
+      ],
+      "size": [
+        420,
+        280
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "2) 英文提示词预览",
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": [
+        -1600,
+        280
+      ],
+      "size": [
+        380,
+        420
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            21,
+            22,
+            23
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "slot_index": 1
+        }
+      ],
+      "title": "3) 首帧/定妆图（生图入口）",
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MarkdownNote",
+      "pos": [
+        -2200,
+        280
+      ],
+      "size": [
+        520,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "生图说明",
+      "properties": {},
+      "widgets_values": [
+        "## 生图步骤\n\n本机目前**没有** SD/Flux checkpoint，只有 MiniMax-H3 视频权重。\n\n**现在怎么用**\n1. 用外部工具 / 另一台机器按润色后的英文提示词出**写实定妆图**\n2. 把图放进 `ComfyUI/input/`，在左侧 LoadImage 选中\n3. 再跑 H3 图生视频\n\n装好本地生图模型后，可在润色与 LoadImage 之间插入 Checkpoint + KSampler 替换此节点。\n"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "PreviewImage",
+      "pos": [
+        -1150,
+        280
+      ],
+      "size": [
+        320,
+        300
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 21
+        }
+      ],
+      "outputs": [],
+      "title": "首帧预览",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "SaveImage",
+      "pos": [
+        -800,
+        280
+      ],
+      "size": [
+        320,
+        300
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 22
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "保存定妆/首帧",
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "h3_film/keyframe"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "ResolutionSelector",
+      "pos": [
+        -1150,
+        620
+      ],
+      "size": [
+        300,
+        180
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            24
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            25
+          ],
+          "slot_index": 1
+        }
+      ],
+      "title": "分辨率（电影 16:9）",
+      "properties": {
+        "Node name for S&R": "ResolutionSelector"
+      },
+      "widgets_values": [
+        "16:9 (Widescreen)",
+        0.98,
+        32
+      ]
+    },
+    {
+      "id": 9,
+      "type": "SaveVideo",
+      "pos": [
+        3500,
+        890
+      ],
+      "size": [
+        420,
+        200
+      ],
+      "flags": {},
+      "order": 99,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "5) 保存电影片段",
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/H3_Film",
+        "auto",
+        "auto"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1024,
+      0,
+      1023,
+      1,
+      "VAE"
+    ],
+    [
+      2,
+      1011,
+      0,
+      1010,
+      1,
+      "VAE"
+    ],
+    [
+      3,
+      1006,
+      0,
+      1009,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1015,
+      0,
+      1014,
+      0,
+      "NOISE"
+    ],
+    [
+      5,
+      1016,
+      0,
+      1014,
+      1,
+      "GUIDER"
+    ],
+    [
+      6,
+      1017,
+      0,
+      1014,
+      2,
+      "SAMPLER"
+    ],
+    [
+      7,
+      1009,
+      0,
+      1014,
+      3,
+      "SIGMAS"
+    ],
+    [
+      8,
+      1104,
+      1,
+      1014,
+      4,
+      "LATENT"
+    ],
+    [
+      9,
+      1006,
+      0,
+      1016,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      1104,
+      0,
+      1016,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      1010,
+      0,
+      1091,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      1023,
+      0,
+      1091,
+      1,
+      "AUDIO"
+    ],
+    [
+      13,
+      1013,
+      0,
+      1104,
+      0,
+      "CLIP"
+    ],
+    [
+      14,
+      1011,
+      0,
+      1104,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      1107,
+      1,
+      1104,
+      7,
+      "INT"
+    ],
+    [
+      16,
+      1111,
+      0,
+      1107,
+      0,
+      "FLOAT"
+    ],
+    [
+      17,
+      1014,
+      0,
+      1010,
+      0,
+      "LATENT"
+    ],
+    [
+      18,
+      1014,
+      0,
+      1023,
+      0,
+      "LATENT"
+    ],
+    [
+      19,
+      2,
+      0,
+      3,
+      0,
+      "*"
+    ],
+    [
+      20,
+      2,
+      0,
+      1104,
+      4,
+      "STRING"
+    ],
+    [
+      21,
+      4,
+      0,
+      6,
+      0,
+      "IMAGE"
+    ],
+    [
+      22,
+      4,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ],
+    [
+      23,
+      4,
+      0,
+      1104,
+      2,
+      "IMAGE"
+    ],
+    [
+      24,
+      8,
+      0,
+      1104,
+      5,
+      "INT"
+    ],
+    [
+      25,
+      8,
+      1,
+      1104,
+      6,
+      "INT"
+    ],
+    [
+      26,
+      1091,
+      0,
+      9,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "① 文字→提示词",
+      "bounding": [
+        -2250,
+        -280,
+        1700,
+        520
+      ],
+      "color": "#3f5159",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "② 生图/定妆首帧",
+      "bounding": [
+        -2250,
+        220,
+        1800,
+        620
+      ],
+      "color": "#3f5159",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "③ MiniMax-H3 生视频",
+      "bounding": [
+        500,
+        -200,
+        2800,
+        1600
+      ],
+      "color": "#3f5159",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "frontendVersion": "1.47.11",
+    "ds": {
+      "scale": 0.55,
+      "offset": [
+        2400,
+        400
+      ]
+    }
+  },
+  "version": 0.4
+}
