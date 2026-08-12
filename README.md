@@ -19,6 +19,16 @@
 
 ---
 
+## 成果展示
+
+初稿短片《story · rain day v2》：由本系统 T2V/I2V 工作流产出的镜头素材拼接而成（含音轨）。
+
+<video src="https://raw.githubusercontent.com/catiseyeqaq/ai-manju-shengcheng-xitong/main/showcase/story_rain_day_v2_full.mp4" controls width="100%"></video>
+
+> 文件：[`showcase/story_rain_day_v2_full.mp4`](showcase/story_rain_day_v2_full.mp4)（约 39MB）；生成素材版权归原作者所有，未经授权不得转载或商用。
+
+---
+
 ## 功能与作用
 
 | 能力 | 说明 |
@@ -157,6 +167,7 @@ ai-manju-shengcheng-xitong/
 ├── configs/
 │   └── extra_model_paths.yaml      # MiniMax-H3 路径注册示例
 ├── workflows/                      # 3 套 BF16 模板工作流
+├── showcase/                       # 成果展示视频
 ├── scripts/                        # ComfyUI / SGLang 启停与注册
 │   ├── comfyui_start.py
 │   ├── comfyui_start_bg.py
