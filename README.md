@@ -28,11 +28,11 @@
 
 > 文件：[`showcase/story_rain_day_v2_full.mp4`](showcase/story_rain_day_v2_full.mp4)（约 39MB）；生成素材版权归原作者所有，未经授权不得转载或商用。
 
-电影级关键帧（H3 文生关键帧工作流产出）：
+电影级关键帧（film_coherent 连贯片管线产出，同一角色跨镜头）：
 
-| 关键帧 1 | 关键帧 2 |
+| 镜头 1 · 咖啡馆外 | 镜头 4 · 超市货架 |
 |:---:|:---:|
-| <img src="showcase/frames/keyframe_00001_.png" width="420" /> | <img src="showcase/frames/keyframe_00002_.png" width="420" /> |
+| <img src="showcase/frames/01_cafe_00001_.png" width="420" /> | <img src="showcase/frames/04_aisle_00001_.png" width="420" /> |
 
 场景一致性底版（film_coherent 管线产出，用于多镜头场景统一）：
 
