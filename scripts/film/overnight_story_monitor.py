@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Overnight story monitor: wait for GPU2-7, ensure shot01/02 recovery, concat, write morning brief."""
+"""Studio-aware rain-day story monitor (replaces the inline AGENT_LOOP bash).
+
+Does NOT auto-launch recover_shot01_02.py (that script waits on obsolete GPU2-7
+ports 8192-8197). Polls 4-GPU studio + filesystem, writes MORNING_STATUS.txt.
+"""
 
 from __future__ import annotations
 
 import json
-import os
 import socket
 import subprocess
 import time
@@ -16,11 +19,16 @@ OUT = Path("/root/ComfyUI/output/video")
 STORY = OUT / "story_rain_day"
 STATUS = ROOT / "logs" / "MORNING_STATUS.txt"
 LOG = ROOT / "logs" / "overnight_monitor.log"
-JOBS = ROOT / "logs" / "story_rain_day_jobs.json"
-RECOVER_JOBS = ROOT / "logs" / "recover_shot01_02_jobs.json"
-RECOVER_SCRIPT = ROOT / "scripts" / "recover_shot01_02.py"
-CONCAT_SCRIPT = ROOT / "scripts" / "concat_story_rain_day.py"
-FINAL = STORY / "story_rain_day_full.mp4"
+CAFE_JOB = ROOT / "logs" / "shot01_cafe_job.json"
+BEAUTY = STORY / "story_rain_day_02to08_beauty.mp4"
+V2 = OUT / "story_rain_day_v2" / "story_rain_day_v2_full.mp4"
+
+STUDIO = [
+    {"gpu": 0, "port": 8188, "role": "UI+H3#1"},
+    {"gpu": 1, "port": 8191, "role": "H3#2"},
+    {"gpu": 2, "port": 8192, "role": "stills"},
+    {"gpu": 3, "port": 8193, "role": "stills#2"},
+]
 
 SHOTS = [
     ("shot01", "Cafe_POV_Umbrella_1080*.mp4", OUT),
@@ -50,7 +58,7 @@ def port_open(port: int) -> bool:
         return False
 
 
-def http_json(url: str, timeout: float = 30):
+def http_json(url: str, timeout: float = 20):
     with urllib.request.urlopen(url, timeout=timeout) as r:
         return json.loads(r.read().decode())
 
@@ -59,10 +67,6 @@ def find_mp4(pattern: str, directory: Path) -> list[Path]:
     if not directory.exists():
         return []
     return sorted(directory.glob(pattern))
-
-
-def shot_files() -> dict[str, list[Path]]:
-    return {name: find_mp4(pat, d) for name, pat, d in SHOTS}
 
 
 def history_status(port: int, prompt_id: str) -> str:
@@ -75,126 +79,102 @@ def history_status(port: int, prompt_id: str) -> str:
     if prompt_id not in h:
         try:
             q = http_json(f"http://127.0.0.1:{port}/queue")
-            if q.get("queue_running") or q.get("queue_pending"):
-                return "running"
+            running = q.get("queue_running") or []
+            pending = q.get("queue_pending") or []
+            for item in list(running) + list(pending):
+                # queue items are [number, prompt_id, ...] or nested
+                flat = json.dumps(item)
+                if prompt_id in flat:
+                    return "queued_or_running"
         except Exception:
             pass
         return "unknown"
     return h[prompt_id].get("status", {}).get("status_str") or "unknown"
 
 
-def recover_running() -> bool:
-    try:
-        out = subprocess.check_output(["pgrep", "-af", "recover_shot01_02.py"], text=True)
-        return "recover_shot01_02.py" in out and "pgrep" not in out.splitlines()[0] or True
-    except subprocess.CalledProcessError:
-        return False
-
-
-def ensure_recover() -> None:
-    try:
-        subprocess.check_output(["pgrep", "-f", "recover_shot01_02.py"])
-        return
-    except subprocess.CalledProcessError:
-        pass
-    log("recover script not running — restarting")
-    subprocess.Popen(
-        ["python", "-u", str(RECOVER_SCRIPT)],
-        stdout=open(ROOT / "logs" / "recover_shot01_02.log", "a"),
-        stderr=subprocess.STDOUT,
-        start_new_session=True,
-    )
+def studio_lines() -> list[str]:
+    lines = ["--- 4-GPU studio ---"]
+    for w in STUDIO:
+        if not port_open(w["port"]):
+            lines.append(f"  GPU{w['gpu']} :{w['port']} DOWN  ({w['role']})")
+            continue
+        try:
+            q = http_json(f"http://127.0.0.1:{w['port']}/queue")
+            nr = len(q.get("queue_running") or [])
+            np_ = len(q.get("queue_pending") or [])
+            lines.append(
+                f"  GPU{w['gpu']} :{w['port']} UP  q={nr}run/{np_}pend  ({w['role']})"
+            )
+        except Exception as e:
+            lines.append(f"  GPU{w['gpu']} :{w['port']} UP  (queue err: {e})")
+    return lines
 
 
 def write_status(extra: str = "") -> None:
-    files = shot_files()
     lines = [
         f"Updated: {time.strftime('%Y-%m-%d %H:%M:%S')}",
         "",
-        "=== Rain-day story overnight status ===",
+        "=== Rain-day story status (studio monitor) ===",
         "",
     ]
     n_ok = 0
-    for name, _, _ in SHOTS:
-        paths = files[name]
+    for name, pat, d in SHOTS:
+        paths = find_mp4(pat, d)
         if paths:
             n_ok += 1
             latest = paths[-1]
-            lines.append(f"[OK] {name}: {latest} ({latest.stat().st_size/1e6:.1f} MB)")
+            lines.append(f"[OK] {name}: {latest.name} ({latest.stat().st_size/1e6:.1f} MB)")
         else:
             lines.append(f"[--] {name}: missing")
 
-    lines += ["", f"Clips ready: {n_ok}/8"]
-    if FINAL.exists():
-        lines.append(f"FULL: {FINAL} ({FINAL.stat().st_size/1e6:.1f} MB)")
+    lines += ["", f"Clips ready: {n_ok}/8", ""]
+    if BEAUTY.exists():
+        lines.append(f"[OK] beauty 02-08: {BEAUTY} ({BEAUTY.stat().st_size/1e6:.1f} MB)")
     else:
-        lines.append("FULL: not concatenated yet")
+        lines.append("[--] beauty 02-08: missing")
+    if V2.exists():
+        lines.append(f"[OK] v2_full (copy of beauty): {V2} ({V2.stat().st_size/1e6:.1f} MB)")
+    else:
+        lines.append("[--] v2_full: missing")
 
-    # live job hints
-    if JOBS.exists():
-        lines.append("")
-        lines.append("--- surviving GPU2-7 ---")
-        for j in json.loads(JOBS.read_text()):
-            st = history_status(j["port"], j["prompt_id"])
-            lines.append(f"  {j['id']} GPU{j['gpu']} :{j['port']} -> {st}")
-    if RECOVER_JOBS.exists():
-        lines.append("")
-        lines.append("--- recovered shot01/02 ---")
-        for k, v in json.loads(RECOVER_JOBS.read_text()).items():
-            if isinstance(v, dict) and "prompt_id" in v:
-                st = history_status(v["port"], v["prompt_id"])
-                lines.append(f"  {k} :{v['port']} -> {st}")
+    lines += ["", *studio_lines()]
+
+    if CAFE_JOB.exists():
+        try:
+            job = json.loads(CAFE_JOB.read_text())
+            st = history_status(job["port"], job["prompt_id"])
+            lines += [
+                "",
+                "--- shot01 cafe job ---",
+                f"  prompt {job['prompt_id']} :{job['port']} -> {st}",
+                f"  submitted {job.get('submitted_at', '?')}",
+            ]
+        except Exception as e:
+            lines += ["", f"cafe job file unreadable: {e}"]
 
     if extra:
         lines += ["", extra]
+    STATUS.parent.mkdir(parents=True, exist_ok=True)
     STATUS.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def try_concat() -> bool:
-    files = shot_files()
-    if not all(files[n] for n, _, _ in SHOTS):
-        return False
-    if FINAL.exists() and FINAL.stat().st_size > 1000:
-        log(f"full already exists: {FINAL}")
-        return True
-    log("all 8 clips present — concatenating")
-    rc = subprocess.call(["python", str(CONCAT_SCRIPT)])
-    log(f"concat rc={rc} exists={FINAL.exists()}")
-    return FINAL.exists()
+def cafe_done() -> bool:
+    return bool(find_mp4("Cafe_POV_Umbrella_1080*.mp4", OUT))
 
 
 def main() -> int:
-    log("overnight monitor started")
-    ensure_recover()
-    deadline = time.time() + 12 * 3600  # 12h safety
-    last_concat_try = 0.0
-
+    log("studio story monitor started (no auto-recover)")
+    deadline = time.time() + 12 * 3600
     while time.time() < deadline:
-        ensure_recover()
         write_status()
-        files = shot_files()
-        n_ok = sum(1 for n, _, _ in SHOTS if files[n])
-        log(f"clips {n_ok}/8 recover_jobs={RECOVER_JOBS.exists()}")
-
-        if n_ok == 8:
-            if try_concat():
-                write_status("DONE — all shots + full cut ready.")
-                log("overnight complete")
-                return 0
-
-        # if recover already submitted, poll until those finish too
-        if RECOVER_JOBS.exists() and n_ok < 8:
-            data = json.loads(RECOVER_JOBS.read_text())
-            pending = []
-            for k, v in data.items():
-                if isinstance(v, dict) and "prompt_id" in v:
-                    st = history_status(v["port"], v["prompt_id"])
-                    pending.append(f"{k}={st}")
-            log("recover: " + ", ".join(pending))
-
-        time.sleep(120)
-
-    write_status("TIMEOUT after 12h — check logs.")
+        if cafe_done() and BEAUTY.exists():
+            write_status("DONE — shot01 present + beauty 02-08 ready. Full 01-08 concat still optional.")
+            log("monitor complete (shot01 + beauty)")
+            return 0
+        n = sum(1 for name, pat, d in SHOTS if find_mp4(pat, d))
+        log(f"clips {n}/8 cafe_done={cafe_done()}")
+        time.sleep(60)
+    write_status("TIMEOUT after 12h")
     log("timeout")
     return 1
 

@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Start ComfyUI H3 workers with a RAM guard (cgroup ~632GiB → max 2 concurrent H3).
 
-Each ~1080p MiniMax-H3 job sits near ~90–100GiB RSS; launching more than two
-workers for video will OOM-kill the box. Default: GPU0 (:8188) + GPU1 (:8191).
+PREFERRED: use ``start_studio_4gpu.py`` instead — it brings up the full 4-GPU
+film studio (GPU0 UI+H3, GPU1 H3#2, GPU2/GPU3 stills) with the same RAM rules.
+
+This script remains for H3-only boots:
+  Default: GPU0 (:8188) + GPU1 (:8191). Each ~1080p MiniMax-H3 job sits near
+  ~90–100GiB RSS; launching more than two H3 workers will OOM-kill the box.
 
 Usage:
+  python start_studio_4gpu.py             # preferred full studio
   python start_h3_workers.py              # start up to MAX_H3_WORKERS (2)
   python start_h3_workers.py --max 1      # only GPU0
   MAX_H3_WORKERS=2 python start_h3_workers.py
