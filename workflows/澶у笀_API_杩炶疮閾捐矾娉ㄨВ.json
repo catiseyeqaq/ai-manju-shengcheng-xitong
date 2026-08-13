@@ -1,0 +1,56 @@
+{
+  "_meta": {
+    "title": "Coherent Photoreal Film Chain",
+    "description": "Annotated API-style workflow: majicFlus/PuLID stills → FaceDetailer → USDU → MiniMax-H3 I2VA first/last → SaveVideo. Run stages via scripts/film_coherent_pipeline.py then scripts/run_story_chain_i2v.py (max 2 GPUs).",
+    "stages": ["bible", "plates", "keyframes", "h3_i2va_chain", "post_sync"],
+    "ram_guard": "MAX_H3_WORKERS=2"
+  },
+  "still_identity_locked": {
+    "10": {"class_type": "UNETLoader", "inputs": {"unet_name": "majicflus_v134.safetensors", "weight_dtype": "default"}, "_note": "bible master / costume variants"},
+    "11": {"class_type": "DualCLIPLoader", "inputs": {"clip_name1": "clip_l.safetensors", "clip_name2": "t5xxl_fp16.safetensors", "type": "flux"}},
+    "12": {"class_type": "VAELoader", "inputs": {"vae_name": "flux1_ae.safetensors"}},
+    "13": {"class_type": "CLIPTextEncode", "inputs": {"text": "PROMPT_LIGHT_CHAR_SHOT", "clip": ["11", 0]}},
+    "14": {"class_type": "CLIPTextEncode", "inputs": {"text": "plastic skin, waxy, anime, over-smooth, extra fingers", "clip": ["11", 0]}},
+    "15": {"class_type": "FluxGuidance", "inputs": {"conditioning": ["13", 0], "guidance": 3.5}},
+    "50": {"class_type": "PulidFluxModelLoader", "inputs": {"pulid_file": "pulid_flux_v0.9.1.safetensors"}, "_note": "face lock to bible_front"},
+    "51": {"class_type": "PulidFluxInsightFaceLoader", "inputs": {"provider": "CPU"}},
+    "52": {"class_type": "PulidFluxEvaClipLoader", "inputs": {}},
+    "53": {"class_type": "LoadImage", "inputs": {"image": "bible_front.png"}},
+    "54": {"class_type": "ApplyPulidFlux", "inputs": {"model": ["10", 0], "pulid_flux": ["50", 0], "eva_clip": ["52", 0], "face_analysis": ["51", 0], "image": ["53", 0], "weight": 0.85, "start_at": 0.0, "end_at": 1.0}},
+    "17": {"class_type": "EmptySD3LatentImage", "inputs": {"width": 1280, "height": 768, "batch_size": 1}},
+    "18": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}},
+    "19": {"class_type": "BasicScheduler", "inputs": {"model": ["54", 0], "scheduler": "beta", "steps": 24, "denoise": 1.0}},
+    "20": {"class_type": "RandomNoise", "inputs": {"noise_seed": 20260812}},
+    "16": {"class_type": "BasicGuider", "inputs": {"model": ["54", 0], "conditioning": ["15", 0]}},
+    "21": {"class_type": "SamplerCustomAdvanced", "inputs": {"noise": ["20", 0], "guider": ["16", 0], "sampler": ["18", 0], "sigmas": ["19", 0], "latent_image": ["17", 0]}},
+    "22": {"class_type": "VAEDecode", "inputs": {"samples": ["21", 0], "vae": ["12", 0]}},
+    "30": {"class_type": "UltralyticsDetectorProvider", "inputs": {"model_name": "bbox/face_yolov8m.pt"}},
+    "31": {"class_type": "FaceDetailer", "inputs": {"image": ["22", 0], "model": ["54", 0], "clip": ["11", 0], "vae": ["12", 0], "denoise": 0.4, "bbox_detector": ["30", 0], "wildcard": "sharp detailed face, natural skin pores", "cycle": 1}, "_note": "second-pass pores"},
+    "40": {"class_type": "UpscaleModelLoader", "inputs": {"model_name": "RealESRGAN_x4.pth"}},
+    "41": {"class_type": "UltimateSDUpscale", "inputs": {"image": ["31", 0], "model": ["54", 0], "positive": ["15", 0], "negative": ["14", 0], "vae": ["12", 0], "upscale_by": 1.5, "denoise": 0.22, "upscale_model": ["40", 0]}, "_note": "~2K still before H3"},
+    "99": {"class_type": "SaveImage", "inputs": {"images": ["41", 0], "filename_prefix": "film_coherent/storyboard"}}
+  },
+  "h3_i2va_bridge": {
+    "1": {"class_type": "LoadImage", "inputs": {"image": "01_cafe.png"}, "_note": "first_frame / head"},
+    "1b": {"class_type": "LoadImage", "inputs": {"image": "02_walk.png"}, "_note": "last_frame / bridge tail→next head"},
+    "2": {"class_type": "UNETLoader", "inputs": {"unet_name": "minimax_h3_fl2va_pruned_bf16.safetensors", "weight_dtype": "default"}},
+    "3": {"class_type": "CLIPLoader", "inputs": {"clip_name": "qwen3vl_32b_minimax_h3_bf16.safetensors", "type": "minimax", "device": "default"}},
+    "4": {"class_type": "VAELoader", "inputs": {"vae_name": "minimax_h3_video_vae_fp16.safetensors"}},
+    "5": {"class_type": "VAELoader", "inputs": {"vae_name": "minimax_h3_audio_vae_fp32.safetensors"}},
+    "6": {"class_type": "MiniMaxH3ImageToVideo", "inputs": {"clip": ["3", 0], "vae": ["4", 0], "first_frame": ["1", 0], "last_frame": ["1b", 0], "prompt": "I2VA_PROMPT_WITH_DIALOGUE", "width": 1920, "height": 1088, "length": 124}, "_note": "serial chain; max 2 GPUs"},
+    "7": {"class_type": "RandomNoise", "inputs": {"noise_seed": 20260831}},
+    "8": {"class_type": "BasicGuider", "inputs": {"model": ["2", 0], "conditioning": ["6", 0]}},
+    "9": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "res_multistep"}},
+    "10": {"class_type": "BasicScheduler", "inputs": {"model": ["2", 0], "scheduler": "simple", "steps": 20, "denoise": 1.0}},
+    "11": {"class_type": "SamplerCustomAdvanced", "inputs": {"noise": ["7", 0], "guider": ["8", 0], "sampler": ["9", 0], "sigmas": ["10", 0], "latent_image": ["6", 1]}},
+    "12": {"class_type": "VAEDecode", "inputs": {"samples": ["11", 0], "vae": ["4", 0]}},
+    "13": {"class_type": "VAEDecodeAudio", "inputs": {"samples": ["11", 0], "vae": ["5", 0]}},
+    "14": {"class_type": "CreateVideo", "inputs": {"images": ["12", 0], "audio": ["13", 0], "fps": 24.0}},
+    "15": {"class_type": "SaveVideo", "inputs": {"video": ["14", 0], "filename_prefix": "video/story_rain_day_v2/SHOT_ID", "format": "auto", "codec": "auto"}}
+  },
+  "how_to_run": [
+    "Stills GPU1: film_coherent_pipeline.py --host http://127.0.0.1:8189 --stage all --pulid",
+    "H3 max2: run_story_chain_i2v.py --start-workers --max-parallel 2",
+    "Post: post_sync_concat.py  OR  beautify_merge_rain_day.py for existing v1 clips"
+  ]
+}

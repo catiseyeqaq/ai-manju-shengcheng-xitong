@@ -13,7 +13,7 @@
 当前阶段已具备：
 
 - MiniMax-H3 BF16 权重本地加载（约 129G）
-- 8 套可直接导入的模板工作流（视频 T2V / I2V / R2V + 电影级关键帧/分镜/连贯片管线）
+- 16 套可直接导入的模板工作流：视频 T2V / I2V / R2V、电影级关键帧/分镜/连贯片管线，以及「大师」六件套（麦橘人物出图 / FLUX2 场景板 / 首尾帧 I2V / 文生视频 / 全链路母版 / 角色写真）
 - ComfyUI `0.31.0` 一键启停脚本（含 PPU 加速参数与注意力后端切换）
 - 基于 SGLang 的 Qwen3.6-35B-A3B 提示词润色自定义节点（已接入 MiniMax 官方 H3 提示词写作技能）
 - 写实短剧全链：majicFlus 人物出图 + PuLID 跨镜脸锁 + FaceDetailer/USDU 画质链 + H3 首尾帧接戏 + 48k 音画对齐拼接（见 [`docs/production-asset-inventory.md`](docs/production-asset-inventory.md)）
@@ -152,7 +152,7 @@ flowchart LR
 - 额外模型路径：`configs/extra_model_paths.yaml`
 - 自定义节点：`custom_nodes/minimax_h3_prompt_polish`（`MiniMax H3 提示词润色 (Qwen)`），内置 MiniMax 官方 H3 提示词写作技能参考（`skills/references/`），按模式（T2VA/I2VA/FL2VA/L2VA/Ref2VA）套用官方字段名、镜头标记与音频段落规范改写提示词
 
-### 模板工作流（8 个）
+### 模板工作流（16 个）
 
 | 文件 | 模式 | 用途 |
 |---|---|---|
@@ -164,6 +164,20 @@ flowchart LR
 | [`workflows/film_zh2prompt_flux_h3.json`](workflows/film_zh2prompt_flux_h3.json) | 中文 → 提示词 → Flux 出图 | 中文草稿转影视级提示词并出图 |
 | [`workflows/film_master_zh_prompt_flux_face_upscale_h3.json`](workflows/film_master_zh_prompt_flux_face_upscale_h3.json) | 出图 + 面部修复 + 放大 | 电影级母版出图（含面部修复与高清放大） |
 | [`workflows/film_coherent_photoreal_chain.json`](workflows/film_coherent_photoreal_chain.json) | PuLID + 首尾帧 I2VA | 连贯片生产链注解（写实短剧主路径） |
+
+#### 「大师」六件套（写实短剧标准生产链）
+
+| 文件 | 用途 |
+|---|---|
+| [`workflows/大师_01_文字生图_麦橘人物_PuLID.json`](workflows/大师_01_文字生图_麦橘人物_PuLID.json) | 麦橘人物文生图 + PuLID 脸锁（角色圣经） |
+| [`workflows/大师_02_场景板_FLUX2空镜.json`](workflows/大师_02_场景板_FLUX2空镜.json) | FLUX.2 高光感场景空镜板 |
+| [`workflows/大师_03_图生视频_H3_首尾帧.json`](workflows/大师_03_图生视频_H3_首尾帧.json) | H3 首尾帧 I2VA 接戏镜头 |
+| [`workflows/大师_04_文生视频_H3.json`](workflows/大师_04_文生视频_H3.json) | H3 文生视频（带音轨） |
+| [`workflows/大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json`](workflows/大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json) | 全链路母版：中文润色 → 麦橘出图 → 修脸 → 放大 → H3 |
+| [`workflows/大师_06_角色写真_图生视频.json`](workflows/大师_06_角色写真_图生视频.json) | 角色写真图生视频 |
+| [`workflows/大师_API_连贯链路注解.json`](workflows/大师_API_连贯链路注解.json) | API 格式连贯链路注解（供脚本调度） |
+
+配套文档：[`workflows/README_大师工作流使用说明.txt`](workflows/README_大师工作流使用说明.txt)、[`workflows/放学路上_60s_分镜与提示词包.md`](workflows/放学路上_60s_分镜与提示词包.md)（60 秒短片分镜实例）、[`workflows/给GPT_制片管线使用说明.md`](workflows/给GPT_制片管线使用说明.md)（制片管线对接说明）
 
 在 ComfyUI 中：`Load` → 选择上述 JSON → 修改提示词 / 分辨率 / 上传参考图 → `Queue Prompt`。
 
@@ -184,10 +198,10 @@ ai-manju-shengcheng-xitong/
 ├── .gitignore
 ├── configs/
 │   └── extra_model_paths.yaml      # MiniMax-H3 路径注册示例
-├── workflows/                      # 8 套模板工作流（视频 + 电影级关键帧/连贯片）
+├── workflows/                      # 16 套模板工作流（视频 + 关键帧/连贯片 + 大师六件套）
 ├── showcase/                       # 成果展示（视频 + 关键帧/场景底版）
 ├── scripts/                        # ComfyUI / SGLang 启停与注册
-│   ├── film/                       # 写实短剧自动化（人物圣经/首尾帧链/RAM守卫/48k拼接）
+│   ├── film/                       # 写实短剧自动化（22 个：人物圣经/首尾帧链/RAM守卫/48k拼接/大师链构建/写真与竖屏短片/ASR监督）
 │   ├── comfyui_start.py
 │   ├── comfyui_start_bg.py
 │   ├── comfyui_stop.py

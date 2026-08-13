@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-"""Coherent photoreal film pipeline — bible, plates, keyframes via majicFlus + optional PuLID.
+"""Coherent photoreal film pipeline — dual still stack + optional PuLID.
+
+Stack split (intended):
+  majicFlus v1.34  — character bible + identity keyframes (+ PuLID face lock)
+  FLUX.2-dev       — empty scene plates (lighting / materials)
+
+NOTE (PPU): flux2_dev_fp8mixed needs eager fp8 dequant — comfy/quant_ops.py
+  disables comfy_kitchen Triton on PPU so FLUX.2 works. Plates default to flux2.
 
 Stages (ComfyUI API on HOST):
-  bible   — character identity stills (front/3q/side/full/indoor)
-  plates  — empty location plates
-  keys    — per-shot continuity keyframes (+ optional FaceDetailer / USDU)
+  bible   — majicFlus character identity stills
+  plates  — FLUX.2 empty location plates (China modern city)
+  keys    — majicFlus continuity keyframes (+ FaceDetailer / USDU)
 
-Uses majicFlus (Flux.1) which is proven on this PPU box. PuLID is applied when
-the custom node + weights load successfully; otherwise falls back to locked
-character prompt + FaceDetailer.
+How to run next story:
+  python film_coherent_pipeline.py --host http://127.0.0.1:8189 --stage bible --pulid
+  python film_coherent_pipeline.py --host http://127.0.0.1:8189 --stage plates
+  python film_coherent_pipeline.py --host http://127.0.0.1:8189 --stage keys --pulid
 """
 
 from __future__ import annotations
@@ -25,58 +33,65 @@ from pathlib import Path
 HOST = "http://127.0.0.1:8189"  # dedicated stills worker (GPU1)
 INPUT = Path("ComfyUI/input")
 OUT_ROOT = Path("ComfyUI/output/film_coherent")
+
+# Region lock for first China project
 NEG = (
     "blurry, out of focus, low resolution, plastic skin, waxy skin, airbrushed, "
     "deformed face, extra fingers, bad anatomy, anime, illustration, 3d render, "
-    "oversaturated, watermark, text, beauty cam, smooth poreless skin"
+    "oversaturated, watermark, beauty cam, smooth poreless skin, "
+    "japanese shrine, torii, sakura festival, tokyo street, korean hangul signage, "
+    "seoul street, english billboard, latin alphabet storefront, europe architecture, "
+    "western downtown, japanese convenience store branding"
 )
 LIGHT = (
     "photorealistic live-action film still, natural skin pores and micro-texture, "
     "35mm lens, T1.5 shallow depth of field, practical lighting, soft bounce fill, "
-    "accurate white balance, cinematic color grade, wet specular highlights where rainy, "
+    "accurate white balance, cinematic color grade, "
+    "modern Chinese mainland city, Simplified Chinese characters only on any signs, "
     "no beauty filter"
 )
 CHAR = (
-    "a 30-year-old East Asian woman, long dark slightly wavy hair, soft natural features, "
-    "subtle freckles, realistic eyes with catchlights, beige trench coat, "
+    "a 20-year-old Chinese mainland woman, majicFlus photoreal beauty, "
+    "long dark slightly wavy hair, soft youthful features, subtle freckles, "
+    "realistic eyes with catchlights, contemporary Chinese casual fashion, "
     "same person across all shots, highly detailed face"
 )
 
 BIBLE = [
     ("bible_front", f"{LIGHT}, {CHAR}, front portrait, looking at camera, soft window light, head and shoulders"),
-    ("bible_3q", f"{LIGHT}, {CHAR}, three-quarter portrait, gentle smile, neon rim light, rain night bokeh"),
-    ("bible_side", f"{LIGHT}, {CHAR}, profile side view, wet hair strands, cinematic side lighting"),
-    ("bible_full_rain", f"{LIGHT}, {CHAR}, full body standing under transparent umbrella on wet neon street at night, medium-wide shot"),
-    ("bible_indoor", f"{LIGHT}, {CHAR}, indoor casual top without trench coat, warm kitchen practical lights, medium shot"),
+    ("bible_3q", f"{LIGHT}, {CHAR}, three-quarter portrait, gentle smile, Chinese city neon rim light, night bokeh"),
+    ("bible_side", f"{LIGHT}, {CHAR}, profile side view, hair strands, cinematic side lighting"),
+    ("bible_full_city", f"{LIGHT}, {CHAR}, full body on modern Chinese urban sidewalk, medium-wide shot"),
+    ("bible_indoor", f"{LIGHT}, {CHAR}, indoor casual top, warm Chinese apartment practical lights, medium shot"),
 ]
 
+# Empty plates — FLUX.2 (no people); China modern only
 PLATES = [
-    ("plate_cafe", f"{LIGHT}, empty rainy neon café entrance at night, awning, wet pavement reflections, no people, establishing wide shot"),
-    ("plate_street", f"{LIGHT}, empty rainy neon city street at night, wet asphalt mirror reflections, no people, establishing wide shot"),
-    ("plate_market", f"{LIGHT}, empty bright Japanese-style supermarket snack aisle, fluorescent lights, colorful shelves, no people"),
-    ("plate_hallway", f"{LIGHT}, empty warm apartment hallway entryway at night, soft ceiling light, door, shoe cabinet, no people"),
-    ("plate_kitchen", f"{LIGHT}, empty small warm kitchen at night, practical lights, steam mood, rain on window, no people"),
+    ("plate_cafe", f"{LIGHT}, empty modern Chinese mainland café storefront at dusk, Chinese signage, wet pavement optional, no people, establishing wide shot"),
+    ("plate_street", f"{LIGHT}, empty modern Chinese city street, high-rise and shop fronts with Chinese characters, no people, establishing wide shot"),
+    ("plate_market", f"{LIGHT}, empty bright Chinese supermarket aisle, Chinese product packaging on shelves, fluorescent lights, no people"),
+    ("plate_hallway", f"{LIGHT}, empty warm Chinese apartment hallway entryway, soft ceiling light, door, shoe cabinet, no people"),
+    ("plate_kitchen", f"{LIGHT}, empty small warm Chinese apartment kitchen at night, practical lights, no people"),
 ]
 
-# Continuity keyframes for rain-day v2 (POV with heroine)
+# Template keyframes (rewrite when plot is ready) — majicFlus + PuLID
 KEYS = [
     ("01_cafe", "plate_cafe", True,
-     f"{LIGHT}, {CHAR}, first-person POV under café awning rainy neon night, she stands ahead with transparent umbrella, looking toward camera, medium shot, face sharp"),
+     f"{LIGHT}, {CHAR}, medium shot at Chinese café entrance, face sharp"),
     ("02_walk", "plate_street", True,
-     f"{LIGHT}, {CHAR}, first-person POV walking under shared transparent umbrella rainy neon street, she on the right holding umbrella, medium shot"),
+     f"{LIGHT}, {CHAR}, walking on modern Chinese city street, medium shot, face sharp"),
     ("03_store", "plate_market", True,
-     f"{LIGHT}, {CHAR}, first-person POV at supermarket glass entrance rainy night, she opens door shaking umbrella, warm interior spill light"),
+     f"{LIGHT}, {CHAR}, at Chinese supermarket entrance, medium shot, face sharp"),
     ("04_aisle", "plate_market", True,
-     f"{LIGHT}, {CHAR}, first-person POV supermarket aisle, trench coat slightly open, she holds instant noodles toward camera, fluorescent light"),
+     f"{LIGHT}, {CHAR}, supermarket aisle, holds item toward camera, face sharp"),
     ("05_checkout", "plate_market", True,
-     f"{LIGHT}, {CHAR}, first-person POV supermarket checkout, she hands a grocery bag toward camera, cashier lights"),
+     f"{LIGHT}, {CHAR}, checkout counter, shopping bag, face sharp"),
     ("06_homewalk", "plate_street", True,
-     f"{LIGHT}, {CHAR}, first-person POV quieter rainy residential street, she shares umbrella carrying shopping bags, warm streetlamps"),
+     f"{LIGHT}, {CHAR}, residential Chinese street walk home, medium shot"),
     ("07_entry", "plate_hallway", True,
-     f"{LIGHT}, {CHAR}, first-person POV apartment hallway, she unlocks door with keys, wet umbrella, warm ceiling light"),
+     f"{LIGHT}, {CHAR}, apartment hallway unlocking door, warm light"),
     ("08_kitchen", "plate_kitchen", False,
-     f"{LIGHT}, a 30-year-old East Asian woman, long dark hair, same face identity, indoor casual top without trench coat, "
-     f"first-person POV warm kitchen, she offers a mug of hot tea toward camera, steam, rain on window"),
+     f"{LIGHT}, {CHAR}, indoor casual top without outer coat, warm kitchen, offers a mug, steam"),
 ]
 
 
@@ -163,25 +178,53 @@ def flux_graph(
     upscale: bool,
     pulid_ref: str | None,
     use_pulid: bool,
+    backend: str = "majic",
 ) -> dict:
-    g: dict = {
-        "10": {"class_type": "UNETLoader", "inputs": {
-            "unet_name": "majicflus_v134.safetensors", "weight_dtype": "default"}},
-        "11": {"class_type": "DualCLIPLoader", "inputs": {
-            "clip_name1": "clip_l.safetensors", "clip_name2": "t5xxl_fp16.safetensors", "type": "flux"}},
-        "12": {"class_type": "VAELoader", "inputs": {"vae_name": "flux1_ae.safetensors"}},
-        "13": {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": ["11", 0]}},
-        "14": {"class_type": "CLIPTextEncode", "inputs": {"text": NEG, "clip": ["11", 0]}},
-        "15": {"class_type": "FluxGuidance", "inputs": {"conditioning": ["13", 0], "guidance": 3.5}},
-        "17": {"class_type": "EmptySD3LatentImage", "inputs": {
-            "width": width, "height": height, "batch_size": 1}},
-        "18": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}},
-        "19": {"class_type": "BasicScheduler", "inputs": {
-            "model": ["10", 0], "scheduler": "beta", "steps": steps, "denoise": 1.0}},
-        "20": {"class_type": "RandomNoise", "inputs": {"noise_seed": seed}},
-    }
-    model_ref: list = ["10", 0]
-    if use_pulid and pulid_ref:
+    """backend: majic = majicFlus+PuLID path; flux2 = FLUX.2 plates (no PuLID)."""
+    if backend == "flux2":
+        # FLUX.2-dev: lighting/materials for empty China city plates
+        g: dict = {
+            "10": {"class_type": "UNETLoader", "inputs": {
+                "unet_name": "flux2_dev_fp8mixed.safetensors", "weight_dtype": "default"}},
+            "11": {"class_type": "CLIPLoader", "inputs": {
+                "clip_name": "mistral_3_small_flux2_bf16.safetensors",
+                "type": "flux2", "device": "default"}},
+            "12": {"class_type": "VAELoader", "inputs": {"vae_name": "flux2-vae.safetensors"}},
+            "13": {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": ["11", 0]}},
+            "14": {"class_type": "CLIPTextEncode", "inputs": {"text": NEG, "clip": ["11", 0]}},
+            "15": {"class_type": "FluxGuidance", "inputs": {"conditioning": ["13", 0], "guidance": 3.5}},
+            "17": {"class_type": "EmptySD3LatentImage", "inputs": {
+                "width": width, "height": height, "batch_size": 1}},
+            "18": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}},
+            "19": {"class_type": "BasicScheduler", "inputs": {
+                "model": ["10", 0], "scheduler": "beta", "steps": steps, "denoise": 1.0}},
+            "20": {"class_type": "RandomNoise", "inputs": {"noise_seed": seed}},
+        }
+        model_ref: list = ["10", 0]
+        # PuLID is Flux.1-oriented; do not apply on FLUX.2 plates
+        use_pulid = False
+        pulid_ref = None
+    else:
+        # majicFlus v1.34 — character bible / keyframes
+        g = {
+            "10": {"class_type": "UNETLoader", "inputs": {
+                "unet_name": "majicflus_v134.safetensors", "weight_dtype": "default"}},
+            "11": {"class_type": "DualCLIPLoader", "inputs": {
+                "clip_name1": "clip_l.safetensors", "clip_name2": "t5xxl_fp16.safetensors", "type": "flux"}},
+            "12": {"class_type": "VAELoader", "inputs": {"vae_name": "flux1_ae.safetensors"}},
+            "13": {"class_type": "CLIPTextEncode", "inputs": {"text": prompt, "clip": ["11", 0]}},
+            "14": {"class_type": "CLIPTextEncode", "inputs": {"text": NEG, "clip": ["11", 0]}},
+            "15": {"class_type": "FluxGuidance", "inputs": {"conditioning": ["13", 0], "guidance": 3.5}},
+            "17": {"class_type": "EmptySD3LatentImage", "inputs": {
+                "width": width, "height": height, "batch_size": 1}},
+            "18": {"class_type": "KSamplerSelect", "inputs": {"sampler_name": "euler"}},
+            "19": {"class_type": "BasicScheduler", "inputs": {
+                "model": ["10", 0], "scheduler": "beta", "steps": steps, "denoise": 1.0}},
+            "20": {"class_type": "RandomNoise", "inputs": {"noise_seed": seed}},
+        }
+        model_ref = ["10", 0]
+
+    if use_pulid and pulid_ref and backend == "majic":
         g["50"] = {"class_type": "PulidFluxModelLoader", "inputs": {
             "pulid_file": "pulid_flux_v0.9.1.safetensors"}}
         g["51"] = {"class_type": "PulidFluxInsightFaceLoader", "inputs": {"provider": "CPU"}}
@@ -208,7 +251,7 @@ def flux_graph(
     g["22"] = {"class_type": "VAEDecode", "inputs": {"samples": ["21", 0], "vae": ["12", 0]}}
     last: list = ["22", 0]
 
-    if face:
+    if face and backend == "majic":
         g["30"] = {"class_type": "UltralyticsDetectorProvider",
                    "inputs": {"model_name": "bbox/face_yolov8m.pt"}}
         g["31"] = {"class_type": "FaceDetailer", "inputs": {
@@ -226,7 +269,7 @@ def flux_graph(
             "cycle": 1}}
         last = ["31", 0]
 
-    if upscale:
+    if upscale and backend == "majic":
         g["40"] = {"class_type": "UpscaleModelLoader", "inputs": {"model_name": "RealESRGAN_x4.pth"}}
         g["41"] = {"class_type": "UltimateSDUpscale", "inputs": {
             "image": list(last), "model": model_ref, "positive": ["15", 0], "negative": ["14", 0],
@@ -245,24 +288,25 @@ def flux_graph(
 
 
 def run_one(name: str, prompt: str, host: str, width: int, height: int, steps: int,
-            seed: int, face: bool, upscale: bool, pulid_ref: str | None, use_pulid: bool) -> str:
-    print(f"\n=== {name} pulid={use_pulid and bool(pulid_ref)} {width}x{height} steps={steps} ===", flush=True)
-    g = flux_graph(prompt, name, width, height, steps, seed, face, upscale, pulid_ref, use_pulid)
+            seed: int, face: bool, upscale: bool, pulid_ref: str | None, use_pulid: bool,
+            backend: str = "majic") -> str:
+    print(f"\n=== {name} backend={backend} pulid={use_pulid and bool(pulid_ref)} "
+          f"{width}x{height} steps={steps} ===", flush=True)
+    g = flux_graph(prompt, name, width, height, steps, seed, face, upscale, pulid_ref, use_pulid, backend)
     try:
         resp = post("/prompt", {"prompt": g, "client_id": str(uuid.uuid4())}, host)
     except Exception as e:
-        if use_pulid:
+        if use_pulid and backend == "majic":
             print(f"  PuLID submit failed ({e}), retry without PuLID", flush=True)
-            g = flux_graph(prompt, name, width, height, steps, seed, face, upscale, None, False)
+            g = flux_graph(prompt, name, width, height, steps, seed, face, upscale, None, False, backend)
             resp = post("/prompt", {"prompt": g, "client_id": str(uuid.uuid4())}, host)
         else:
             raise
     if "prompt_id" not in resp:
-        # node errors — retry without pulid
         err = json.dumps(resp, ensure_ascii=False)[:1500]
         print("  submit error:", err, flush=True)
-        if use_pulid:
-            g = flux_graph(prompt, name, width, height, steps, seed, face, upscale, None, False)
+        if use_pulid and backend == "majic":
+            g = flux_graph(prompt, name, width, height, steps, seed, face, upscale, None, False, backend)
             resp = post("/prompt", {"prompt": g, "client_id": str(uuid.uuid4())}, host)
         if "prompt_id" not in resp:
             raise RuntimeError(resp)
@@ -278,8 +322,11 @@ def run_one(name: str, prompt: str, host: str, width: int, height: int, steps: i
                 err_detail = json.dumps(m[1], ensure_ascii=False)[:2000]
                 break
         print("  ERROR", err_detail or msgs[:2], flush=True)
-        if use_pulid:
-            return run_one(name, prompt, host, width, height, steps, seed, face, upscale, None, False)
+        if use_pulid and backend == "majic":
+            return run_one(name, prompt, host, width, height, steps, seed, face, upscale, None, False, backend)
+        if backend == "flux2":
+            print("  FLUX.2 failed — falling back to majicFlus for this plate", flush=True)
+            return run_one(name, prompt, host, width, height, steps, seed, False, False, None, False, "majic")
         raise RuntimeError(status)
     path = collect_saved(entry, name)
     print(f"  -> {path}", flush=True)
@@ -302,6 +349,12 @@ def main() -> int:
     ap.add_argument("--no-upscale", action="store_true")
     ap.add_argument("--pulid", action="store_true", help="force PuLID on (needs weights)")
     ap.add_argument("--no-pulid", action="store_true")
+    ap.add_argument(
+        "--plates-backend",
+        choices=["majic", "flux2"],
+        default="flux2",
+        help="scene plates stack (flux2 for light/materials; majic fallback)",
+    )
     args = ap.parse_args()
 
     OUT_ROOT.mkdir(parents=True, exist_ok=True)
@@ -311,7 +364,8 @@ def main() -> int:
     use_pulid = args.pulid or (pulid_weight.exists() and pulid_weight.stat().st_size > 1_000_000 and not args.no_pulid)
     if args.no_pulid:
         use_pulid = False
-    print(f"host={args.host} use_pulid={use_pulid} weight_ok={pulid_weight.exists()} size={pulid_weight.stat().st_size if pulid_weight.exists() else 0}")
+    print(f"host={args.host} use_pulid={use_pulid} plates_backend={args.plates_backend} "
+          f"weight_ok={pulid_weight.exists()} size={pulid_weight.stat().st_size if pulid_weight.exists() else 0}")
 
     face = not args.no_face
     up = not args.no_upscale
@@ -320,7 +374,8 @@ def main() -> int:
         run_one("smoke_face", f"{LIGHT}, {CHAR}, front portrait", args.host,
                 768, 768, 12, args.seed, True, False,
                 "story_heroine.png" if (INPUT / "story_heroine.png").exists() else None,
-                use_pulid and (INPUT / "story_heroine.png").exists())
+                use_pulid and (INPUT / "story_heroine.png").exists(),
+                backend="majic")
         return 0
 
     bible_ref = None
@@ -330,10 +385,9 @@ def main() -> int:
             ref = bible_ref
             up_pulid = use_pulid and ref is not None
             path = run_one(name, prompt, args.host, args.width, args.height, args.steps,
-                           args.seed + i, face, False, ref, up_pulid)
+                           args.seed + i, face, False, ref, up_pulid, backend="majic")
             if name == "bible_front":
                 bible_ref = f"{name}.png"
-                # also set as story heroine master
                 shutil.copy2(path, INPUT / "story_heroine_v2.png")
                 shutil.copy2(path, INPUT / "story_heroine.png")
 
@@ -347,13 +401,13 @@ def main() -> int:
     if args.stage in ("plates", "all"):
         for i, (name, prompt) in enumerate(PLATES):
             run_one(name, prompt, args.host, args.width, args.height, max(16, args.steps - 4),
-                    args.seed + 100 + i, False, False, None, False)
+                    args.seed + 100 + i, False, False, None, False, backend=args.plates_backend)
 
     if args.stage in ("keys", "all"):
         for i, (name, _plate, coat, prompt) in enumerate(KEYS):
             run_one(name, prompt, args.host, args.width, args.height, args.steps,
-                    args.seed + 200 + i, face, up, bible_ref, use_pulid and bible_ref is not None)
-            # bridge: copy key as next bridge tail proxy
+                    args.seed + 200 + i, face, up, bible_ref, use_pulid and bible_ref is not None,
+                    backend="majic")
             src = OUT_ROOT / "storyboard" / f"{name}.png"
             if src.exists():
                 br = OUT_ROOT / "bridge"
@@ -361,13 +415,25 @@ def main() -> int:
                 shutil.copy2(src, br / f"{name}_tail.png")
 
     board = {
-        "character_ref": bible_ref,
+        "project": "china_majic_short_drama",
+        "character": {
+            "age": 20,
+            "look": "majicFlus Chinese mainland woman",
+            "ref": bible_ref,
+            "stack": "majicflus_v134 + clip_l + t5xxl_fp16 + flux1_ae + PuLID",
+        },
+        "plates_stack_requested": args.plates_backend,
+        "plates_stack_note": (
+            "FLUX.2 fp8mixed via eager dequant on PPU "
+            "(comfy_kitchen Triton disabled in quant_ops.py)"
+        ),
+        "region_lock": "China modern city; Simplified Chinese signage only",
         "bible": [n for n, _ in BIBLE],
         "plates": [n for n, _ in PLATES],
         "keys": [{"id": n, "plate": p, "coat": c} for n, p, c, _ in KEYS],
         "out_root": str(OUT_ROOT),
     }
-    board_path = Path("ComfyUI/workflows/story_rain_day_v2_board.json")
+    board_path = Path("ComfyUI/workflows/project_china_majic_board.json")
     board_path.parent.mkdir(parents=True, exist_ok=True)
     board_path.write_text(json.dumps(board, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"board -> {board_path}")
