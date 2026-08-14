@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build UI workflow: 大师_06 · 角色写真图生视频（首帧 I2VA + Turbo）
+"""Build UI workflow: H3 角色写真图生视频（首帧 I2VA + Turbo）
 
 Uses the user's photoreal face stills as first_frame only (no last_frame bridge).
 Official MiniMax H3 I2VA prompt structure + majicFlus cinematic portrait look.
@@ -38,7 +38,7 @@ overall_soundscape: A low night-city traffic bed continues under soft cloth move
 non_diegetic_music: Sparse soft-piano notes at a slow tempo, joined by a sustained low string pad that stays quiet and fades gently at the end."""
 
 NOTE = (
-    "# 大师_06 · 角色写真图生视频\n\n"
+    "# H3 · 角色写真图生视频\n\n"
     "**用途**：用你的写真静帧直接出一段麦橘气质角色视频（H3 I2VA 仅首帧）。\n\n"
     "**怎么用**\n"
     "1. 左栏换成 `portrait_*.png`（已预置 5 张）\n"
@@ -104,7 +104,7 @@ def build() -> dict:
 
 def main() -> None:
     data = build()
-    name = "大师_06_角色写真_图生视频.json"
+    name = "H3_角色写真_图生视频.json"
     for d in (WORK, USER):
         d.mkdir(parents=True, exist_ok=True)
         path = d / name

@@ -1,0 +1,3312 @@
+{
+  "id": "4ed4f0f8-ec8f-4783-bc6e-da39c3ec7218",
+  "revision": 0,
+  "last_node_id": 3111,
+  "last_link_id": 57,
+  "nodes": [
+    {
+      "id": 3011,
+      "type": "VAELoader",
+      "pos": [
+        4940.0,
+        810.0
+      ],
+      "size": [
+        640,
+        70
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            2,
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_video_vae_fp16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_video_vae_fp16.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_video_vae_fp16.safetensors"
+      ],
+      "title": "视频 VAE"
+    },
+    {
+      "id": 3024,
+      "type": "VAELoader",
+      "pos": [
+        4940.0,
+        950.0
+      ],
+      "size": [
+        650,
+        70
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "vae_name",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader",
+        "models": [
+          {
+            "name": "minimax_h3_audio_vae_fp32.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/vae/minimax_h3_audio_vae_fp32.safetensors",
+            "directory": "vae"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ],
+      "title": "音频 VAE"
+    },
+    {
+      "id": 3023,
+      "type": "VAEDecodeAudio",
+      "pos": [
+        6930.0,
+        760.0
+      ],
+      "size": [
+        230,
+        60
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 18
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "AUDIO",
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecodeAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3010,
+      "type": "VAEDecode",
+      "pos": [
+        6930.0,
+        640.0
+      ],
+      "size": [
+        230,
+        60
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "samples",
+          "name": "samples",
+          "type": "LATENT",
+          "link": 17
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3017,
+      "type": "KSamplerSelect",
+      "pos": [
+        6180.0,
+        740.0
+      ],
+      "size": [
+        370,
+        70
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "localized_name": "SAMPLER",
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
+      },
+      "widgets_values": [
+        "res_multistep"
+      ]
+    },
+    {
+      "id": 3009,
+      "type": "BasicScheduler",
+      "pos": [
+        6180.0,
+        890.0
+      ],
+      "size": [
+        370,
+        130
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "SIGMAS",
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicScheduler"
+      },
+      "widgets_values": [
+        "simple",
+        20,
+        1
+      ],
+      "title": "H3 调度 / 步数"
+    },
+    {
+      "id": 3014,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        6600.0,
+        650.0
+      ],
+      "size": [
+        230,
+        140
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "noise",
+          "name": "noise",
+          "type": "NOISE",
+          "link": 4
+        },
+        {
+          "localized_name": "guider",
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 5
+        },
+        {
+          "localized_name": "sampler",
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 6
+        },
+        {
+          "localized_name": "sigmas",
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 7
+        },
+        {
+          "localized_name": "latent_image",
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "output",
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            17,
+            18
+          ]
+        },
+        {
+          "localized_name": "denoised_output",
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3016,
+      "type": "BasicGuider",
+      "pos": [
+        6180.0,
+        610.0
+      ],
+      "size": [
+        360,
+        60
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "localized_name": "conditioning",
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "GUIDER",
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicGuider"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 3006,
+      "type": "UNETLoader",
+      "pos": [
+        4940.0,
+        460.0
+      ],
+      "size": [
+        640,
+        90
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "unet_name",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "MODEL",
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3,
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader",
+        "models": [
+          {
+            "name": "minimax_h3_fl2va_pruned_bf16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/diffusion_models/minimax_h3_fl2va_pruned_bf16.safetensors",
+            "directory": "diffusion_models"
+          }
+        ]
+      },
+      "widgets_values": [
+        "minimax_h3_fl2va_pruned_bf16.safetensors",
+        "default"
+      ],
+      "title": "H3 UNET fl2va bf16"
+    },
+    {
+      "id": 3013,
+      "type": "CLIPLoader",
+      "pos": [
+        4940.0,
+        620.0
+      ],
+      "size": [
+        640,
+        120
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip_name",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader",
+        "models": [
+          {
+            "name": "qwen3vl_32b_minimax_h3_bf16.safetensors",
+            "url": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/main/text_encoders/qwen3vl_32b_minimax_h3_bf16.safetensors",
+            "directory": "text_encoders"
+          }
+        ]
+      },
+      "widgets_values": [
+        "qwen3vl_32b_minimax_h3_bf16.safetensors",
+        "minimax",
+        "default"
+      ],
+      "title": "H3 文本编码器 Qwen3-VL"
+    },
+    {
+      "id": 3015,
+      "type": "RandomNoise",
+      "pos": [
+        6180.0,
+        450.0
+      ],
+      "size": [
+        360,
+        90
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "noise_seed",
+          "name": "noise_seed",
+          "type": "INT",
+          "widget": {
+            "name": "noise_seed"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "NOISE",
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise"
+      },
+      "widgets_values": [
+        42,
+        "randomize"
+      ],
+      "title": "视频种子"
+    },
+    {
+      "id": 3091,
+      "type": "CreateVideo",
+      "pos": [
+        7260.0,
+        680.0
+      ],
+      "size": [
+        270,
+        110
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 11
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "VIDEO",
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            57
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        24,
+        8
+      ],
+      "title": "合成 MP4（画面 + 立体声）"
+    },
+    {
+      "id": 3104,
+      "type": "MiniMaxH3ImageToVideo",
+      "pos": [
+        5670.0,
+        420.0
+      ],
+      "size": [
+        430,
+        550
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 13
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        },
+        {
+          "localized_name": "first_frame",
+          "name": "first_frame",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 54
+        },
+        {
+          "localized_name": "last_frame",
+          "name": "last_frame",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 53
+        },
+        {
+          "localized_name": "width",
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": 55
+        },
+        {
+          "localized_name": "height",
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": 56
+        },
+        {
+          "localized_name": "length",
+          "name": "length",
+          "type": "INT",
+          "widget": {
+            "name": "length"
+          },
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "positive",
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            10
+          ]
+        },
+        {
+          "localized_name": "LATENT",
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MiniMaxH3ImageToVideo"
+      },
+      "widgets_values": [
+        "Vaporwave title sequence look: pink and blue gradient palette, VHS tracking artifacts, Greek statue motifs, chrome palm trees, RGB chromatic aberration, lo-fi retro atmosphere, mood languid and nostalgic.\n\nTimeline:\n[0s-1s] VHS static opens the frame, the title \"COMFYUI\" appears with RGB split and a slight horizontal jitter.\n[1s-2.5s] Hard cut, a Greek plaster bust close-up, pink-purple gradient sky, a pixelated sun.\n[2.5s-4s] Clean \"STARRING\" credits appear, \"LATENT\" and \"CONTROLNET\" each shown exactly once.\n[4s-5s] Final card \"DIRECTED BY COMFYUI\" holds, one VHS tracking glitch settling into stability.\n\nHard cuts only, transitions landing with tape jumps, no push-ins, no dissolves.\n\nAudio: lo-fi vaporwave score, slow drum machine with soft bass, VHS tape-noise sample joins at 2.5s, melody fading for the last 1s.\n\nAll text must be clearly legible, do not misspell English, no Chinese characters, do not repeat names or job titles, no soft dissolves, no subtitle bars.",
+        1344,
+        768,
+        73
+      ],
+      "title": "⑥ MiniMax H3 首帧 → 带声视频"
+    },
+    {
+      "id": 3107,
+      "type": "ComfyMathExpression",
+      "pos": [
+        5250.0,
+        1200.0
+      ],
+      "size": [
+        360,
+        160
+      ],
+      "flags": {
+        "collapsed": false
+      },
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "a",
+          "localized_name": "values.a",
+          "name": "values.a",
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": 16
+        },
+        {
+          "label": "b",
+          "localized_name": "values.b",
+          "name": "values.b",
+          "shape": 7,
+          "type": "FLOAT,INT,BOOLEAN",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": []
+        },
+        {
+          "localized_name": "INT",
+          "name": "INT",
+          "type": "INT",
+          "links": [
+            15
+          ]
+        },
+        {
+          "localized_name": "BOOL",
+          "name": "BOOL",
+          "type": "BOOLEAN",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ComfyMathExpression"
+      },
+      "widgets_values": [
+        "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17"
+      ]
+    },
+    {
+      "id": 3111,
+      "type": "PrimitiveFloat",
+      "pos": [
+        4940.0,
+        1200.0
+      ],
+      "size": [
+        270,
+        70
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "FLOAT",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "FLOAT",
+          "name": "FLOAT",
+          "type": "FLOAT",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "title": "时长（秒）",
+      "properties": {
+        "Node name for S&R": "PrimitiveFloat"
+      },
+      "widgets_values": [
+        5.0
+      ]
+    },
+    {
+      "id": 1,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        40.0
+      ],
+      "size": [
+        360,
+        340
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "用法 · 全链路",
+      "properties": {},
+      "widgets_values": [
+        "# 全链路 · 中文润色 → 麦橘 → H3\n\n```\n中文草稿 → 润色 → 麦橘生图 → 修脸 → 放大 → H3 视频\n```\n\n**默认角色**：20 岁中国大陆女性、麦橘气质、简体中文招牌\n\n**顺序**\n1. 只改左上角中文草稿\n2. Qwen 润色服务就绪后，把 polish 的 bypass 改 false\n3. 先跑到「保存定妆图」\n4. 再放开右侧 H3（仅 GPU0/GPU1，并发 ≤ 2）"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "PrimitiveStringMultiline",
+      "pos": [
+        640.0,
+        40.0
+      ],
+      "size": [
+        480,
+        240
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            19,
+            20
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "① 中文分镜草稿（20岁中国大陆女性 / 麦橘）",
+      "properties": {
+        "Node name for S&R": "PrimitiveStringMultiline"
+      },
+      "widgets_values": [
+        "中国大陆现代城市黄昏街道，一位二十岁中国大陆女性，麦橘超然写实气质，长发微卷，当代中式休闲穿搭，走过带简体中文招牌的商铺。浅景深，35mm 胶片质感，自然皮肤纹理。镜头缓慢跟拍她的侧脸与脚步。环境声：城市车流与人声；配乐轻柔。"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "MiniMaxH3PromptPolish",
+      "pos": [
+        1180.0,
+        40.0
+      ],
+      "size": [
+        480,
+        340
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "prompt_zh",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt_zh"
+          },
+          "link": 19
+        },
+        {
+          "name": "mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "mode"
+          },
+          "link": null
+        },
+        {
+          "name": "duration_sec",
+          "type": "FLOAT",
+          "widget": {
+            "name": "duration_sec"
+          },
+          "link": null
+        },
+        {
+          "name": "base_url",
+          "type": "STRING",
+          "widget": {
+            "name": "base_url"
+          },
+          "link": null
+        },
+        {
+          "name": "model",
+          "type": "STRING",
+          "widget": {
+            "name": "model"
+          },
+          "link": null
+        },
+        {
+          "name": "temperature",
+          "type": "FLOAT",
+          "widget": {
+            "name": "temperature"
+          },
+          "link": null
+        },
+        {
+          "name": "max_tokens",
+          "type": "INT",
+          "widget": {
+            "name": "max_tokens"
+          },
+          "link": null
+        },
+        {
+          "name": "timeout_sec",
+          "type": "FLOAT",
+          "widget": {
+            "name": "timeout_sec"
+          },
+          "link": null
+        },
+        {
+          "name": "bypass",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "bypass"
+          },
+          "link": null
+        },
+        {
+          "name": "extra_instructions",
+          "type": "STRING",
+          "widget": {
+            "name": "extra_instructions"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "prompt_en",
+          "type": "STRING",
+          "links": [
+            21,
+            23
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "②a 官方 skill → 静帧提示词（喂生图）",
+      "properties": {
+        "Node name for S&R": "MiniMaxH3PromptPolish"
+      },
+      "widgets_values": [
+        "中国大陆现代城市黄昏街道，一位二十岁中国大陆女性，麦橘超然写实气质，长发微卷，当代中式休闲穿搭，走过带简体中文招牌的商铺。浅景深，35mm 胶片质感，自然皮肤纹理。镜头缓慢跟拍她的侧脸与脚步。环境声：城市车流与人声；配乐轻柔。",
+        "IMAGE_STILL",
+        5.0,
+        "http://127.0.0.1:8030/v1",
+        "qwen3.6-fast",
+        0.3,
+        700,
+        180.0,
+        true,
+        "Frame the face large enough to stay sharp: medium shot or closer. Explicitly mention eyes in focus."
+      ]
+    },
+    {
+      "id": 4,
+      "type": "MiniMaxH3PromptPolish",
+      "pos": [
+        1180.0,
+        420.0
+      ],
+      "size": [
+        480,
+        340
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "prompt_zh",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt_zh"
+          },
+          "link": 20
+        },
+        {
+          "name": "mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "mode"
+          },
+          "link": null
+        },
+        {
+          "name": "duration_sec",
+          "type": "FLOAT",
+          "widget": {
+            "name": "duration_sec"
+          },
+          "link": null
+        },
+        {
+          "name": "base_url",
+          "type": "STRING",
+          "widget": {
+            "name": "base_url"
+          },
+          "link": null
+        },
+        {
+          "name": "model",
+          "type": "STRING",
+          "widget": {
+            "name": "model"
+          },
+          "link": null
+        },
+        {
+          "name": "temperature",
+          "type": "FLOAT",
+          "widget": {
+            "name": "temperature"
+          },
+          "link": null
+        },
+        {
+          "name": "max_tokens",
+          "type": "INT",
+          "widget": {
+            "name": "max_tokens"
+          },
+          "link": null
+        },
+        {
+          "name": "timeout_sec",
+          "type": "FLOAT",
+          "widget": {
+            "name": "timeout_sec"
+          },
+          "link": null
+        },
+        {
+          "name": "bypass",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "bypass"
+          },
+          "link": null
+        },
+        {
+          "name": "extra_instructions",
+          "type": "STRING",
+          "widget": {
+            "name": "extra_instructions"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "prompt_en",
+          "type": "STRING",
+          "links": [
+            22,
+            53
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "②b 官方 skill → I2VA 镜头提示词（喂 H3）",
+      "properties": {
+        "Node name for S&R": "MiniMaxH3PromptPolish"
+      },
+      "widgets_values": [
+        "中国大陆现代城市黄昏街道，一位二十岁中国大陆女性，麦橘超然写实气质，长发微卷，当代中式休闲穿搭，走过带简体中文招牌的商铺。浅景深，35mm 胶片质感，自然皮肤纹理。镜头缓慢跟拍她的侧脸与脚步。环境声：城市车流与人声；配乐轻柔。",
+        "I2VA",
+        5.0,
+        "http://127.0.0.1:8030/v1",
+        "qwen3.6-fast",
+        0.4,
+        1400,
+        180.0,
+        true,
+        "Keep the identity, wardrobe and framing of <Picture 1> unchanged."
+      ]
+    },
+    {
+      "id": 5,
+      "type": "PreviewAny",
+      "pos": [
+        1720.0,
+        40.0
+      ],
+      "size": [
+        380,
+        220
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "静帧提示词（可核对）",
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "PreviewAny",
+      "pos": [
+        1720.0,
+        300.0
+      ],
+      "size": [
+        380,
+        260
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "source",
+          "type": "*",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "title": "镜头提示词（官方三段式）",
+      "properties": {
+        "Node name for S&R": "PreviewAny"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        860.0
+      ],
+      "size": [
+        540,
+        420
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "提示词要点（官方规范摘要）",
+      "properties": {},
+      "widgets_values": [
+        "## 官方写法\n- **第一个镜头不写时间戳**，之后每个 `[Shot N]` 必须给严格递增的切点\n- 运镜三要素：**类型 + 幅度 + 速度**\n  `Push In / Tracking Shot / Arc Shot` + `with small amplitude` + `at slow speed`\n- 台词放 `<d>[English] …</d>`，说话人固定 ID `(S1)`\n- 画面里出现的字，用英文双引号原样保留\n- `overall_soundscape` 只写环境音与动作音，不重复台词\n- `non_diegetic_music` 只写观众听得到、角色听不到的配乐\n\n## 写实真人的关键词\n`photorealistic, live-action, natural skin texture, 35mm, shallow depth of field, natural lighting`\n\n反过来要压掉：`anime, illustration, 3d render, plastic skin`"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "UNETLoader",
+      "pos": [
+        640.0,
+        1360.0
+      ],
+      "size": [
+        480,
+        100
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            27,
+            29,
+            39,
+            47
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "③ 麦橘超然 majicFlus v1.34",
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "majicflus_v134.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "DualCLIPLoader",
+      "pos": [
+        640.0,
+        1510.0
+      ],
+      "size": [
+        480,
+        130
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip_name1",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name1"
+          },
+          "link": null
+        },
+        {
+          "name": "clip_name2",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name2"
+          },
+          "link": null
+        },
+        {
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            24,
+            25,
+            40
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Flux 文本编码器 (clip_l + t5xxl)",
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "clip_l.safetensors",
+        "t5xxl_fp16.safetensors",
+        "flux"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAELoader",
+      "pos": [
+        640.0,
+        1690.0
+      ],
+      "size": [
+        480,
+        80
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            36,
+            41,
+            50
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Flux.1 VAE",
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "flux1_ae.safetensors"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1180.0,
+        1360.0
+      ],
+      "size": [
+        440,
+        180
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": 23
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            26
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "正向（来自官方润色）",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 14,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1180.0,
+        1580.0
+      ],
+      "size": [
+        440,
+        180
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "widget": {
+            "name": "text"
+          },
+          "link": null
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            43,
+            49
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "负向（日韩欧/英文招牌等）",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, out of focus, low resolution, plastic skin, waxy skin, airbrushed, deformed face, extra fingers, bad anatomy, anime, illustration, 3d render, oversaturated, watermark, text overlay, japanese shrine, torii, sakura festival, tokyo street, korean hangul signage, seoul street, english billboard, latin alphabet storefront, europe architecture, western downtown, japanese convenience store branding"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "FluxGuidance",
+      "pos": [
+        1680.0,
+        1360.0
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 26
+        },
+        {
+          "name": "guidance",
+          "type": "FLOAT",
+          "widget": {
+            "name": "guidance"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            28,
+            42,
+            48
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Flux 引导 3.5（官方推荐）",
+      "properties": {
+        "Node name for S&R": "FluxGuidance"
+      },
+      "widgets_values": [
+        3.5
+      ]
+    },
+    {
+      "id": 16,
+      "type": "BasicGuider",
+      "pos": [
+        2020.0,
+        1360.0
+      ],
+      "size": [
+        280,
+        60
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 27
+        },
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            31
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "引导器",
+      "properties": {
+        "Node name for S&R": "BasicGuider"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 17,
+      "type": "EmptySD3LatentImage",
+      "pos": [
+        1180.0,
+        1800.0
+      ],
+      "size": [
+        300,
+        130
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "widget": {
+            "name": "width"
+          },
+          "link": null
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "widget": {
+            "name": "height"
+          },
+          "link": null
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            34
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "首帧画幅 1344x768（对齐 H3）",
+      "properties": {
+        "Node name for S&R": "EmptySD3LatentImage"
+      },
+      "widgets_values": [
+        1344,
+        768,
+        1
+      ]
+    },
+    {
+      "id": 18,
+      "type": "KSamplerSelect",
+      "pos": [
+        1180.0,
+        1980.0
+      ],
+      "size": [
+        300,
+        60
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            32
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "采样器 euler",
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "BasicScheduler",
+      "pos": [
+        1180.0,
+        2090.0
+      ],
+      "size": [
+        300,
+        140
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 29
+        },
+        {
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            33
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "调度 beta / 28 步（皮肤质感）",
+      "properties": {
+        "Node name for S&R": "BasicScheduler"
+      },
+      "widgets_values": [
+        "beta",
+        28,
+        1.0
+      ]
+    },
+    {
+      "id": 20,
+      "type": "RandomNoise",
+      "pos": [
+        1180.0,
+        2270.0
+      ],
+      "size": [
+        300,
+        90
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise_seed",
+          "type": "INT",
+          "widget": {
+            "name": "noise_seed"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            30
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "首帧种子",
+      "properties": {
+        "Node name for S&R": "RandomNoise"
+      },
+      "widgets_values": [
+        42,
+        "randomize"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "SamplerCustomAdvanced",
+      "pos": [
+        2020.0,
+        1520.0
+      ],
+      "size": [
+        320,
+        180
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 30
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 31
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 32
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 33
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [
+            35
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "生图采样",
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 22,
+      "type": "VAEDecode",
+      "pos": [
+        2400.0,
+        1520.0
+      ],
+      "size": [
+        260,
+        60
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 35
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            37,
+            38
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "解码原始首帧",
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 23,
+      "type": "PreviewImage",
+      "pos": [
+        2400.0,
+        1640.0
+      ],
+      "size": [
+        300,
+        300
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 37
+        }
+      ],
+      "outputs": [],
+      "title": "原始首帧（修脸前）",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 24,
+      "type": "MarkdownNote",
+      "pos": [
+        40.0,
+        1360.0
+      ],
+      "size": [
+        540,
+        460
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "生图参数说明",
+      "properties": {},
+      "widgets_values": [
+        "## majicFlus（麦橘超然）官方推荐\n| 参数 | 值 |\n|---|---|\n| steps | 20~30 |\n| FluxGuidance | 3.5 |\n| 采样 | `euler + simple/beta` 通用 |\n| 采样 | `dpmpp_2m + sgm_uniform` 更出皮肤质感 |\n| 底座 | Flux.1-dev，clip_l + t5xxl_fp16 |\n\n## 画幅\n这里设 **1344×768**，直接对齐 H3 原生画布，首帧不用再缩放，避免二次插值糊掉细节。\n\n竖屏人像可改 **832×1216**，但送 H3 前要改成 H3 支持的比例。\n\n## 想换 FLUX.2\n把 UNETLoader 换 `flux2_dev_fp8mixed`，文本编码器改用单个 `CLIPLoader` 载入 `mistral_3_small_flux2_bf16`，VAE 换 `flux2-vae`。FLUX.2 自带多参考锁角色，跨镜头保脸更强。"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "UltralyticsDetectorProvider",
+      "pos": [
+        2740.0,
+        1360.0
+      ],
+      "size": [
+        340,
+        80
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "BBOX_DETECTOR",
+          "type": "BBOX_DETECTOR",
+          "links": [
+            44
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "SEGM_DETECTOR",
+          "type": "SEGM_DETECTOR",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "④ 人脸检测器 YOLOv8m",
+      "properties": {
+        "Node name for S&R": "UltralyticsDetectorProvider"
+      },
+      "widgets_values": [
+        "bbox/face_yolov8m.pt"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "FaceDetailer",
+      "pos": [
+        3140.0,
+        1360.0
+      ],
+      "size": [
+        420,
+        700
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 38
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 39
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 40
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 41
+        },
+        {
+          "name": "guide_size",
+          "type": "FLOAT",
+          "widget": {
+            "name": "guide_size"
+          },
+          "link": null
+        },
+        {
+          "name": "guide_size_for",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "guide_size_for"
+          },
+          "link": null
+        },
+        {
+          "name": "max_size",
+          "type": "FLOAT",
+          "widget": {
+            "name": "max_size"
+          },
+          "link": null
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        },
+        {
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 42
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 43
+        },
+        {
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        },
+        {
+          "name": "feather",
+          "type": "INT",
+          "widget": {
+            "name": "feather"
+          },
+          "link": null
+        },
+        {
+          "name": "noise_mask",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "noise_mask"
+          },
+          "link": null
+        },
+        {
+          "name": "force_inpaint",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "force_inpaint"
+          },
+          "link": null
+        },
+        {
+          "name": "bbox_threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "bbox_threshold"
+          },
+          "link": null
+        },
+        {
+          "name": "bbox_dilation",
+          "type": "INT",
+          "widget": {
+            "name": "bbox_dilation"
+          },
+          "link": null
+        },
+        {
+          "name": "bbox_crop_factor",
+          "type": "FLOAT",
+          "widget": {
+            "name": "bbox_crop_factor"
+          },
+          "link": null
+        },
+        {
+          "name": "sam_detection_hint",
+          "type": "COMBO",
+          "widget": {
+            "name": "sam_detection_hint"
+          },
+          "link": null
+        },
+        {
+          "name": "sam_dilation",
+          "type": "INT",
+          "widget": {
+            "name": "sam_dilation"
+          },
+          "link": null
+        },
+        {
+          "name": "sam_threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sam_threshold"
+          },
+          "link": null
+        },
+        {
+          "name": "sam_bbox_expansion",
+          "type": "INT",
+          "widget": {
+            "name": "sam_bbox_expansion"
+          },
+          "link": null
+        },
+        {
+          "name": "sam_mask_hint_threshold",
+          "type": "FLOAT",
+          "widget": {
+            "name": "sam_mask_hint_threshold"
+          },
+          "link": null
+        },
+        {
+          "name": "sam_mask_hint_use_negative",
+          "type": "COMBO",
+          "widget": {
+            "name": "sam_mask_hint_use_negative"
+          },
+          "link": null
+        },
+        {
+          "name": "drop_size",
+          "type": "INT",
+          "widget": {
+            "name": "drop_size"
+          },
+          "link": null
+        },
+        {
+          "name": "bbox_detector",
+          "type": "BBOX_DETECTOR",
+          "link": 44
+        },
+        {
+          "name": "wildcard",
+          "type": "STRING",
+          "widget": {
+            "name": "wildcard"
+          },
+          "link": null
+        },
+        {
+          "name": "cycle",
+          "type": "INT",
+          "widget": {
+            "name": "cycle"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            45,
+            46,
+            54
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "cropped_refined",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 1
+        },
+        {
+          "name": "cropped_enhanced_alpha",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 2
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 3
+        },
+        {
+          "name": "detailer_pipe",
+          "type": "DETAILER_PIPE",
+          "links": [],
+          "slot_index": 4
+        },
+        {
+          "name": "cnet_images",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 5
+        }
+      ],
+      "title": "④ 修远景小脸 FaceDetailer",
+      "properties": {
+        "Node name for S&R": "FaceDetailer"
+      },
+      "widgets_values": [
+        1024,
+        true,
+        1536,
+        42,
+        "randomize",
+        25,
+        1.0,
+        "euler",
+        "beta",
+        0.45,
+        8,
+        true,
+        true,
+        0.4,
+        10,
+        3.0,
+        "center-1",
+        0,
+        0.93,
+        0,
+        0.7,
+        "False",
+        10,
+        "sharp detailed face, natural skin pores and texture, catchlight in the eyes, individual eyelashes, subtle skin blemishes, photorealistic",
+        1
+      ]
+    },
+    {
+      "id": 32,
+      "type": "PreviewImage",
+      "pos": [
+        3140.0,
+        2100.0
+      ],
+      "size": [
+        320,
+        300
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 45
+        }
+      ],
+      "outputs": [],
+      "title": "修脸后对比",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 33,
+      "type": "MarkdownNote",
+      "pos": [
+        2740.0,
+        1480.0
+      ],
+      "size": [
+        360,
+        560
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "④ 远景脸模糊怎么修",
+      "properties": {},
+      "widgets_values": [
+        "## 原理\nYOLO 检测脸 → 裁出来单独放大重绘 → 羽化贴回。\n所以**小脸也能拿到足够像素**再画。\n\n## 关键参数\n| 参数 | 作用 | 调法 |\n|---|---|---|\n| `bbox_threshold` | 检测灵敏度 | 远景小脸 **调低到 0.3~0.4** |\n| `guide_size` | 裁剪块放大到多少 | Flux 用 **1024** |\n| `max_size` | 上限，防爆显存 | 1536 |\n| `denoise` | 敢改多少 | **0.3~0.5**；越怪就调低 |\n| `bbox_crop_factor` | 带多少上下文 | 3.0；特写可降到 2.0 |\n| `feather` | 边缘羽化 | 5~20，防补丁感 |\n| `cfg` | Flux 蒸馏模型 | **必须 1.0** |\n\n## 越修越怪时\n1. 先看检测框对不对（看 `mask` 输出）\n2. 降 `denoise`\n3. 降 `guide_size`\n\n**它不是换脸工具**，不保证跨镜头身份一致；那个要靠 H3 的 R2V 或 FLUX.2 多参考。"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "UpscaleModelLoader",
+      "pos": [
+        3620.0,
+        1360.0
+      ],
+      "size": [
+        320,
+        60
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "model_name"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "UPSCALE_MODEL",
+          "type": "UPSCALE_MODEL",
+          "links": [
+            51
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "⑤ 放大模型 RealESRGAN x4",
+      "properties": {
+        "Node name for S&R": "UpscaleModelLoader"
+      },
+      "widgets_values": [
+        "RealESRGAN_x4.pth"
+      ]
+    },
+    {
+      "id": 41,
+      "type": "UltimateSDUpscale",
+      "pos": [
+        4000.0,
+        1360.0
+      ],
+      "size": [
+        420,
+        660
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 46
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 47
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 48
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 49
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 50
+        },
+        {
+          "name": "upscale_by",
+          "type": "FLOAT",
+          "widget": {
+            "name": "upscale_by"
+          },
+          "link": null
+        },
+        {
+          "name": "seed",
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "widget": {
+            "name": "cfg"
+          },
+          "link": null
+        },
+        {
+          "name": "sampler_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "sampler_name"
+          },
+          "link": null
+        },
+        {
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        },
+        {
+          "name": "upscale_model",
+          "type": "UPSCALE_MODEL",
+          "link": 51
+        },
+        {
+          "name": "mode_type",
+          "type": "COMBO",
+          "widget": {
+            "name": "mode_type"
+          },
+          "link": null
+        },
+        {
+          "name": "tile_width",
+          "type": "INT",
+          "widget": {
+            "name": "tile_width"
+          },
+          "link": null
+        },
+        {
+          "name": "tile_height",
+          "type": "INT",
+          "widget": {
+            "name": "tile_height"
+          },
+          "link": null
+        },
+        {
+          "name": "mask_blur",
+          "type": "INT",
+          "widget": {
+            "name": "mask_blur"
+          },
+          "link": null
+        },
+        {
+          "name": "tile_padding",
+          "type": "INT",
+          "widget": {
+            "name": "tile_padding"
+          },
+          "link": null
+        },
+        {
+          "name": "seam_fix_mode",
+          "type": "COMBO",
+          "widget": {
+            "name": "seam_fix_mode"
+          },
+          "link": null
+        },
+        {
+          "name": "seam_fix_denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "seam_fix_denoise"
+          },
+          "link": null
+        },
+        {
+          "name": "seam_fix_width",
+          "type": "INT",
+          "widget": {
+            "name": "seam_fix_width"
+          },
+          "link": null
+        },
+        {
+          "name": "seam_fix_mask_blur",
+          "type": "INT",
+          "widget": {
+            "name": "seam_fix_mask_blur"
+          },
+          "link": null
+        },
+        {
+          "name": "seam_fix_padding",
+          "type": "INT",
+          "widget": {
+            "name": "seam_fix_padding"
+          },
+          "link": null
+        },
+        {
+          "name": "force_uniform_tiles",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "force_uniform_tiles"
+          },
+          "link": null
+        },
+        {
+          "name": "tiled_decode",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "tiled_decode"
+          },
+          "link": null
+        },
+        {
+          "name": "batch_size",
+          "type": "INT",
+          "widget": {
+            "name": "batch_size"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            52
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "⑤ 分块重绘放大（Topaz 开源替代）",
+      "properties": {
+        "Node name for S&R": "UltimateSDUpscale"
+      },
+      "widgets_values": [
+        2.0,
+        42,
+        "randomize",
+        18,
+        1.0,
+        "euler",
+        "beta",
+        0.22,
+        "Linear",
+        1024,
+        1024,
+        8,
+        32,
+        "Half Tile",
+        1.0,
+        64,
+        8,
+        16,
+        true,
+        true,
+        1
+      ]
+    },
+    {
+      "id": 42,
+      "type": "SaveImage",
+      "pos": [
+        4480.0,
+        1360.0
+      ],
+      "size": [
+        380,
+        420
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 52
+        },
+        {
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "title": "⑤ 保存成片级定妆图",
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "film/keyframe_2k"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "MarkdownNote",
+      "pos": [
+        3620.0,
+        1460.0
+      ],
+      "size": [
+        360,
+        560
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "⑤ 放大说明",
+      "properties": {},
+      "widgets_values": [
+        "## 为什么不用 Topaz\nTopaz Photo/Video AI 是闭源付费桌面软件，这台机器是无界面容器，装不了也没授权。\n\n开源等效链路：\n`RealESRGAN 像素放大` + `分块 img2img 重绘补细节`。\n\n## 关键参数\n| 参数 | 作用 | 调法 |\n|---|---|---|\n| `upscale_by` | 放大倍数 | 2.0 起步；4.0 很慢 |\n| `denoise` | 补多少细节 | **0.15~0.3**；>0.4 会改内容 |\n| `tile_width/height` | 分块大小 | 1024；显存紧就 768 |\n| `seam_fix_mode` | 接缝修复 | `Half Tile` 通常够 |\n| `tiled_decode` | 省显存 | 大图开 |\n\n## 顺序很重要\n**先修脸再放大**：脸在小尺寸时检测更准，放大后 YOLO 反而容易漏检。\n追极限可以放大后再修一次脸。\n\n## 视频要放大？\nH3 出片后逐帧过一遍这条链路，或直接把 H3 的 `megapixels` 拉到 0.98 出原生 1344×768。"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "ResolutionSelector",
+      "pos": [
+        5130.0,
+        850.0
+      ],
+      "size": [
+        300,
+        170
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "aspect_ratio",
+          "type": "COMBO",
+          "widget": {
+            "name": "aspect_ratio"
+          },
+          "link": null
+        },
+        {
+          "name": "megapixels",
+          "type": "FLOAT",
+          "widget": {
+            "name": "megapixels"
+          },
+          "link": null
+        },
+        {
+          "name": "multiple",
+          "type": "INT",
+          "widget": {
+            "name": "multiple"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "width",
+          "type": "INT",
+          "links": [
+            55
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "height",
+          "type": "INT",
+          "links": [
+            56
+          ],
+          "slot_index": 1
+        }
+      ],
+      "title": "视频画幅 16:9 · 0.98MP",
+      "properties": {
+        "Node name for S&R": "ResolutionSelector"
+      },
+      "widgets_values": [
+        "16:9 (Widescreen)",
+        0.98,
+        32
+      ]
+    },
+    {
+      "id": 51,
+      "type": "SaveVideo",
+      "pos": [
+        7690.0,
+        680.0
+      ],
+      "size": [
+        420,
+        200
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 57
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": null
+        }
+      ],
+      "title": "⑥ 保存电影片段",
+      "properties": {
+        "Node name for S&R": "SaveVideo"
+      },
+      "widgets_values": [
+        "video/Film_H3",
+        "auto",
+        "auto"
+      ]
+    },
+    {
+      "id": 52,
+      "type": "MarkdownNote",
+      "pos": [
+        5130.0,
+        80.0
+      ],
+      "size": [
+        520,
+        320
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "title": "⑥ H3 说明",
+      "properties": {},
+      "widgets_values": [
+        "## 输入\n- `first_frame` 接的是 **修脸后的图**（节点 ④）\n  想快点出草稿，可以改接节点 ㉒ 的原始首帧\n- `prompt` 来自 **I2VA 官方格式**润色\n\n## 速度预期（单张 PPU）\n1344×768 / 5 秒 / 20 步 ≈ **12 分钟**，约 30s/step。\n想快：降 `megapixels` 到 0.4、步数降到 12~16、时长缩到 3 秒。\n\n## 共享机注意\nH3 峰值吃 **90+GB**，跑之前先 `ppu-smi` 看有没有空卡，否则会 OOM 起不来。"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      3024,
+      0,
+      3023,
+      1,
+      "VAE"
+    ],
+    [
+      2,
+      3011,
+      0,
+      3010,
+      1,
+      "VAE"
+    ],
+    [
+      3,
+      3006,
+      0,
+      3009,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      3015,
+      0,
+      3014,
+      0,
+      "NOISE"
+    ],
+    [
+      5,
+      3016,
+      0,
+      3014,
+      1,
+      "GUIDER"
+    ],
+    [
+      6,
+      3017,
+      0,
+      3014,
+      2,
+      "SAMPLER"
+    ],
+    [
+      7,
+      3009,
+      0,
+      3014,
+      3,
+      "SIGMAS"
+    ],
+    [
+      8,
+      3104,
+      1,
+      3014,
+      4,
+      "LATENT"
+    ],
+    [
+      9,
+      3006,
+      0,
+      3016,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      3104,
+      0,
+      3016,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      3010,
+      0,
+      3091,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      3023,
+      0,
+      3091,
+      1,
+      "AUDIO"
+    ],
+    [
+      13,
+      3013,
+      0,
+      3104,
+      0,
+      "CLIP"
+    ],
+    [
+      14,
+      3011,
+      0,
+      3104,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      3107,
+      1,
+      3104,
+      7,
+      "INT"
+    ],
+    [
+      16,
+      3111,
+      0,
+      3107,
+      0,
+      "FLOAT"
+    ],
+    [
+      17,
+      3014,
+      0,
+      3010,
+      0,
+      "LATENT"
+    ],
+    [
+      18,
+      3014,
+      0,
+      3023,
+      0,
+      "LATENT"
+    ],
+    [
+      19,
+      2,
+      0,
+      3,
+      0,
+      "STRING"
+    ],
+    [
+      20,
+      2,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      21,
+      3,
+      0,
+      5,
+      0,
+      "*"
+    ],
+    [
+      22,
+      4,
+      0,
+      6,
+      0,
+      "*"
+    ],
+    [
+      23,
+      3,
+      0,
+      13,
+      0,
+      "STRING"
+    ],
+    [
+      24,
+      11,
+      0,
+      13,
+      1,
+      "CLIP"
+    ],
+    [
+      25,
+      11,
+      0,
+      14,
+      1,
+      "CLIP"
+    ],
+    [
+      26,
+      13,
+      0,
+      15,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      27,
+      10,
+      0,
+      16,
+      0,
+      "MODEL"
+    ],
+    [
+      28,
+      15,
+      0,
+      16,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      29,
+      10,
+      0,
+      19,
+      0,
+      "MODEL"
+    ],
+    [
+      30,
+      20,
+      0,
+      21,
+      0,
+      "NOISE"
+    ],
+    [
+      31,
+      16,
+      0,
+      21,
+      1,
+      "GUIDER"
+    ],
+    [
+      32,
+      18,
+      0,
+      21,
+      2,
+      "SAMPLER"
+    ],
+    [
+      33,
+      19,
+      0,
+      21,
+      3,
+      "SIGMAS"
+    ],
+    [
+      34,
+      17,
+      0,
+      21,
+      4,
+      "LATENT"
+    ],
+    [
+      35,
+      21,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      36,
+      12,
+      0,
+      22,
+      1,
+      "VAE"
+    ],
+    [
+      37,
+      22,
+      0,
+      23,
+      0,
+      "IMAGE"
+    ],
+    [
+      38,
+      22,
+      0,
+      31,
+      0,
+      "IMAGE"
+    ],
+    [
+      39,
+      10,
+      0,
+      31,
+      1,
+      "MODEL"
+    ],
+    [
+      40,
+      11,
+      0,
+      31,
+      2,
+      "CLIP"
+    ],
+    [
+      41,
+      12,
+      0,
+      31,
+      3,
+      "VAE"
+    ],
+    [
+      42,
+      15,
+      0,
+      31,
+      12,
+      "CONDITIONING"
+    ],
+    [
+      43,
+      14,
+      0,
+      31,
+      13,
+      "CONDITIONING"
+    ],
+    [
+      44,
+      30,
+      0,
+      31,
+      28,
+      "BBOX_DETECTOR"
+    ],
+    [
+      45,
+      31,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ],
+    [
+      46,
+      31,
+      0,
+      41,
+      0,
+      "IMAGE"
+    ],
+    [
+      47,
+      10,
+      0,
+      41,
+      1,
+      "MODEL"
+    ],
+    [
+      48,
+      15,
+      0,
+      41,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      49,
+      14,
+      0,
+      41,
+      3,
+      "CONDITIONING"
+    ],
+    [
+      50,
+      12,
+      0,
+      41,
+      4,
+      "VAE"
+    ],
+    [
+      51,
+      40,
+      0,
+      41,
+      12,
+      "UPSCALE_MODEL"
+    ],
+    [
+      52,
+      41,
+      0,
+      42,
+      0,
+      "IMAGE"
+    ],
+    [
+      53,
+      4,
+      0,
+      3104,
+      4,
+      "STRING"
+    ],
+    [
+      54,
+      31,
+      0,
+      3104,
+      2,
+      "IMAGE"
+    ],
+    [
+      55,
+      50,
+      0,
+      3104,
+      5,
+      "INT"
+    ],
+    [
+      56,
+      50,
+      1,
+      3104,
+      6,
+      "INT"
+    ],
+    [
+      57,
+      3091,
+      0,
+      51,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "① 中文草稿 → 官方润色",
+      "bounding": [
+        0.0,
+        -36.0,
+        2140.0,
+        1356.0
+      ],
+      "color": "#3f5159",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "title": "② 麦橘生图",
+      "bounding": [
+        0.0,
+        1284.0,
+        2740.0,
+        1116.0
+      ],
+      "color": "#444a8a",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "title": "③ 修脸 + 放大",
+      "bounding": [
+        2700.0,
+        1284.0,
+        2200.0,
+        1156.0
+      ],
+      "color": "#3f6b4a",
+      "font_size": 20,
+      "flags": {}
+    },
+    {
+      "title": "④ H3 视频",
+      "bounding": [
+        4900.0,
+        4.0,
+        3250.0,
+        1396.0
+      ],
+      "color": "#6b4a3f",
+      "font_size": 20,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.42,
+      "offset": [
+        40,
+        40
+      ]
+    }
+  },
+  "version": 0.4
+}
