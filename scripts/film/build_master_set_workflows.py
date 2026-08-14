@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Chinese-named master UI workflow set (大师_01..05) into both workflow dirs.
+"""Build the studio UI workflow set (麦橘 / FLUX.2 / H3) into both workflow dirs.
 
 Adapts existing film_master / H3 i2v-t2v / coherent-pipeline patterns.
 """
@@ -310,7 +310,7 @@ def build_01_t2i() -> dict:
     g = Graph()
     g.add(note(
         1, (20, -360), (420, 320), "① 用法说明",
-        "# 大师_01 · 文字生图（麦橘 + 可选 PuLID）\n\n"
+        "# 麦橘人物 · 文生图\n\n"
         "**链路**：模型 →（可选锁脸）→ 采样 → 修脸 → 放大 → 保存\n\n"
         "- 底座：`majicflus_v134` + `clip_l` + `t5xxl_fp16` + `flux1_ae`\n"
         "- **PuLID 可选**：换左下角脸参考图；不用则断开 ApplyPulidFlux，把 UNET 直连引导器\n"
@@ -587,7 +587,7 @@ def build_02_plates() -> dict:
     g = Graph()
     g.add(note(
         1, (20, -300), (380, 260), "② 用法说明",
-        "# 大师_02 · 空镜场景板（FLUX.2）\n\n"
+        "# FLUX.2 · 空镜场景板\n\n"
         "**用途**：无人中国现代城市空镜，给后续 H3 当环境板。\n\n"
         "- 模型：`flux2_dev_fp8mixed` + mistral TE + `flux2-vae`\n"
         "- 提示词默认：简体中文招牌、无人、黄金时段\n"
@@ -713,7 +713,7 @@ def build_02_plates() -> dict:
 # C) H3 图生视频 首尾帧
 # ---------------------------------------------------------------------------
 NOTE_03 = (
-    "# 大师_03 · 图生视频（H3 首尾帧 + Turbo）\n\n"
+    "# H3 · 图生视频（首尾帧 + Turbo）\n\n"
     "**用途**：用两张静帧桥接一段连贯视频（I2VA）。\n\n"
     "**怎么用**\n"
     "1. 左栏换上 **首帧 / 尾帧** 图\n"
@@ -726,7 +726,7 @@ NOTE_03 = (
 )
 
 NOTE_04 = (
-    "# 大师_04 · 文生视频（H3 + Turbo）\n\n"
+    "# H3 · 文生视频（Turbo）\n\n"
     "**用途**：纯文字直接出带声视频（不接首尾帧）。\n\n"
     "**怎么用**\n"
     "1. 改 `MiniMaxH3` 节点里的英文分镜提示词\n"
@@ -878,9 +878,9 @@ def build_04_t2v() -> dict:
 # E) 全链路：压缩现有 master（源模板已删，就地收紧）
 # ---------------------------------------------------------------------------
 def build_05_full_chain() -> dict:
-    src = WORK / "大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json"
+    src = WORK / "全链路_中文润色_麦橘_H3.json"
     if not src.exists():
-        src = USER / "大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json"
+        src = USER / "全链路_中文润色_麦橘_H3.json"
     wf = json.loads(src.read_text(encoding="utf-8"))
     by_id = {n["id"]: n for n in wf["nodes"]}
 
@@ -895,9 +895,9 @@ def build_05_full_chain() -> dict:
         bring_cluster(h3_nodes, (still_right + 80, 80))
 
     if 1 in by_id:
-        by_id[1]["title"] = "总览 / 大师_05"
+        by_id[1]["title"] = "用法 · 全链路"
         by_id[1]["widgets_values"] = [
-            "# 大师_05 · 全链路\n\n"
+            "# 全链路 · 中文润色 → 麦橘 → H3\n\n"
             "```\n中文草稿 → 润色 → 麦橘生图 → 修脸 → 放大 → H3 视频\n```\n\n"
             "**默认角色**：20 岁中国大陆女性、麦橘气质、简体中文招牌\n\n"
             "**顺序**\n"
@@ -927,26 +927,21 @@ def build_05_full_chain() -> dict:
 
 def main() -> int:
     outs: list[Path] = []
-    outs += write_both("大师_01_文字生图_麦橘人物_PuLID.json", build_01_t2i())
-    outs += write_both("大师_02_场景板_FLUX2空镜.json", build_02_plates())
-    outs += write_both("大师_03_图生视频_H3_首尾帧.json", build_03_i2v())
-    outs += write_both("大师_04_文生视频_H3.json", build_04_t2v())
+    outs += write_both("麦橘人物_文生图.json", build_01_t2i())
+    outs += write_both("FLUX2_空镜场景板.json", build_02_plates())
+    outs += write_both("H3_图生视频_首尾帧.json", build_03_i2v())
+    outs += write_both("H3_文生视频.json", build_04_t2v())
     try:
-        outs += write_both("大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json", build_05_full_chain())
+        outs += write_both("全链路_中文润色_麦橘_H3.json", build_05_full_chain())
     except Exception as e:
-        print(f"skip 大师_05: {e}")
+        print(f"skip 全链路: {e}")
 
-    # UI 只保留大师套件；模板留在 workdata
-    for junk in ("video_minimax_h3_r2v_bf16.json",):
+    # 官方模板只留在 workdata，不进 UI
+    for junk in ("video_minimax_h3_r2v_bf16.json", "video_minimax_h3_i2v_bf16.json", "video_minimax_h3_t2v_bf16.json"):
         p = USER / junk
         if p.exists():
             p.unlink()
             print(f"removed UI clutter {p}")
-
-    # README sync
-    readme = WORK / "README_大师工作流使用说明.txt"
-    if readme.exists():
-        (USER / readme.name).write_text(readme.read_text(encoding="utf-8"), encoding="utf-8")
     return 0
 
 
