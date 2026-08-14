@@ -1,0 +1,28 @@
+# Register MiniMax-H3 weights into ComfyUI.
+# Runtime weights live under your local model root; set base_path to your
+# actual model directory before launching (示例占位，部署时替换为真实路径).
+minimax_h3:
+    base_path: /your/modelMiniMax-H3-ComfyUI
+    is_default: true
+    diffusion_models: diffusion_models/
+    text_encoders: text_encoders/
+    vae: vae/
+
+# Keep the default ComfyUI models tree (adjust base_path to your ComfyUI install).
+comfyui_local:
+    base_path: /your/comfyui/root/
+    checkpoints: models/checkpoints/
+    configs: models/configs/
+    loras: models/loras/
+    vae: models/vae/
+    text_encoders: |
+         models/text_encoders/
+         models/clip/
+    diffusion_models: |
+         models/unet/
+         models/diffusion_models/
+    clip_vision: models/clip_vision/
+    embeddings: models/embeddings/
+    controlnet: models/controlnet/
+    upscale_models: models/upscale_models/
+    audio_encoders: models/audio_encoders/
