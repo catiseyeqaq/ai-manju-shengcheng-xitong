@@ -1,6 +1,10 @@
-# AI 漫剧生成系统（ComfyUI + MiniMax-H3）
+# AI Film & Short Drama Generation System
 
-面向 **AI 出图 / 出视频 / 电影级漫剧与短片生成** 的本地部署工程。基于 [ComfyUI](https://github.com/Comfy-Org/ComfyUI) 工作流框架，集成 **MiniMax-H3** 音视频联合生成模型，并配套 **Qwen3.6** 提示词润色服务，支持文生视频（T2V）、图生视频（I2V）、参考生视频（R2V）。
+![CI](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/actions/workflows/ci.yml/badge.svg)
+
+> 写实 AI 电影 / 短剧本地生成与生产流水线（ComfyUI + MiniMax-H3）
+
+面向 **AI 出图 / 出视频 / 电影级写实短片生成** 的本地部署工程。基于 [ComfyUI](https://github.com/Comfy-Org/ComfyUI) 工作流框架，集成 **MiniMax-H3** 音视频联合生成模型，并配套 **Qwen3.6** 提示词润色服务，支持文生视频（T2V）、图生视频（I2V）、参考生视频（R2V）。
 
 > 仓库定位：部署配置、模板工作流、运维脚本与项目文档。**不包含** 百 GB 级模型权重与完整 ComfyUI 上游源码（请按文档自行拉取）。
 
@@ -8,7 +12,7 @@
 
 ## 项目简介
 
-本项目服务于「AI 漫剧 / 影视内容」生产链路：从中文创意草稿 → 英文影视级提示词 → ComfyUI 节点图推理 → 带立体声音轨的视频片段。可扩展到分镜、角色一致性、多镜头拼接等后续能力。
+本项目服务于「写实 AI 电影 / 短剧 / 影视内容」生产链路：从中文创意草稿 → 英文影视级提示词 → ComfyUI 节点图推理 → 带立体声音轨的视频片段。可扩展到分镜、角色一致性、多镜头拼接等后续能力。
 
 当前阶段已具备：
 
@@ -22,17 +26,14 @@
 
 ## 成果展示
 
-初稿短片《story · rain day v2》：由本系统 T2V/I2V 工作流产出的镜头素材拼接而成（含音轨）。
+完整成片（1080p / 含音轨）发布在 **GitHub Releases**，不进入仓库 Git 历史，避免仓库体积随版本迭代膨胀：
 
-<video src="https://raw.githubusercontent.com/catiseyeqaq/ai-manju-shengcheng-xitong/main/showcase/story_rain_day_v2_full.mp4" controls width="100%"></video>
+| 成片 | 说明 | 下载 |
+| --- | --- | --- |
+| 《story · rain day v2》 | 由本系统 T2V/I2V 工作流产出的镜头素材拼接而成（含音轨） | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
+| 《万灵绘卷 · 琴书画》 | 古风琴书画三幕，H3 首尾帧接戏 + 48k 音画对齐拼接（6 个分镜） | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
 
-> 文件：[`showcase/story_rain_day_v2_full.mp4`](showcase/story_rain_day_v2_full.mp4)（约 39MB）；生成素材版权归原作者所有，未经授权不得转载或商用。
-
-《万灵绘卷 · 琴书画》初稿成片（古风琴书画三幕，H3 首尾帧接戏 + 48k 音画对齐拼接）：
-
-<video src="https://raw.githubusercontent.com/catiseyeqaq/ai-manju-shengcheng-xitong/main/showcase/wanling_qinshuhua.mp4" controls width="100%"></video>
-
-> 文件：[`showcase/wanling_qinshuhua.mp4`](showcase/wanling_qinshuhua.mp4)（约 40MB，6 个分镜拼接）。
+> 生成素材版权归原作者所有，未经授权不得转载或商用。
 
 电影级关键帧（film_coherent 连贯片管线产出，同一角色跨镜头）：
 
@@ -107,7 +108,7 @@ flowchart LR
 | CPU | **Hygon C86-4G (OPN:7490)** × 2 Socket，64 核/路，合计 **256 逻辑线程** |
 | 内存 | 约 **1.5 TiB**（`MemTotal ≈ 1580 GB`） |
 | 系统 | Ubuntu 24.04.2 LTS（x86_64） |
-| 存储策略 | 运行权重在本地盘 `models`；``（ossfs）仅作持久备份 |
+| 存储策略 | 运行权重在 `${MODEL_ROOT}`；`${WORKSPACE_ROOT}`（ossfs）仅作持久备份 |
 
 更完整的探测输出见 [`docs/hardware_snapshot.txt`](docs/hardware_snapshot.txt)。
 
@@ -128,15 +129,15 @@ flowchart LR
 | Audio VAE | `minimax_h3_audio_vae_fp32.safetensors` | 578M |
 | **合计** | | **≈ 129G** |
 
-- 运行路径：`models/MiniMax-H3-ComfyUI`
-- 备份路径：`ComfyUI/models_backup/MiniMax-H3-ComfyUI`
+- 运行路径：`${MODEL_ROOT}/MiniMax-H3-ComfyUI`
+- 备份路径：`${WORKSPACE_ROOT}/ComfyUI/models_backup/MiniMax-H3-ComfyUI`
 - 上游参考：[MiniMaxAI/MiniMax-H3](https://huggingface.co/MiniMaxAI/MiniMax-H3)
 
 ### 2）Qwen3.6-35B-A3B（提示词润色）
 
 | 项目 | 值 |
 |---|---|
-| 路径 | `models/Qwen3.6-35B-A3B` |
+| 路径 | `${MODEL_ROOT}/Qwen3.6-35B-A3B` |
 | 大小 | ≈ 67G（全量 BF16） |
 | 服务 | SGLang，默认端口 `8030`，`TP_SIZE=2`，默认占用 GPU `4,5` |
 | 对外名 | `qwen3.6-fast`（OpenAI 兼容 `/v1/chat/completions`） |
@@ -237,7 +238,7 @@ ai-manju-shengcheng-xitong/
 ├── configs/
 │   └── extra_model_paths.yaml      # MiniMax-H3 路径注册示例
 ├── workflows/                      # 33 套模板工作流（万灵绘卷系列 + 视频 + 出图改图 + 连贯片）
-├── showcase/                       # 成果展示（两部初稿成片 + 关键帧/场景底版）
+├── showcase/                       # 成果展示（关键帧/场景底版；完整成片见 GitHub Releases）
 ├── scripts/                        # ComfyUI / SGLang 启停与注册
 │   ├── film/                       # 写实短剧自动化（29 个：万灵绘卷出片/人物圣经/首尾帧链/RAM守卫/48k拼接/洗图与室内管线）
 │   ├── comfyui_start.py
@@ -271,7 +272,7 @@ cd ComfyUI
 # 按官方文档创建 conda/venv 并安装依赖（需匹配本机 PPU/CUDA 栈）
 
 # 下载 MiniMax-H3 ComfyUI 打包权重到本地盘，例如：
-# models/MiniMax-H3-ComfyUI/{diffusion_models,text_encoders,vae}/
+# ${MODEL_ROOT}/MiniMax-H3-ComfyUI/{diffusion_models,text_encoders,vae}/
 
 # 复制本仓库自定义节点
 cp -r custom_nodes/minimax_h3_prompt_polish /path/to/ComfyUI/custom_nodes/
@@ -309,9 +310,9 @@ python scripts/comfyui_start.py
 
 | 变量 | 默认 | 含义 |
 |---|---|---|
-| `COMFYUI_ROOT` | `ComfyUI` | ComfyUI 根目录 |
+| `COMFYUI_ROOT` | `${COMFYUI_ROOT}` | ComfyUI 根目录 |
 | `COMFYUI_PORT` | `8188` | WebUI 端口 |
-| `COMFYUI_H3_MODEL_SRC` | `models/MiniMax-H3-ComfyUI` | H3 权重 |
+| `COMFYUI_H3_MODEL_SRC` | `${MODEL_ROOT}/MiniMax-H3-ComfyUI` | H3 权重 |
 | `SGLANG_POLISH_PORT` | `8030` | 润色服务端口 |
 | `SGLANG_POLISH_GPUS` | `4,5` | 润色占用卡 |
 | `COMFYUI_LLM_BASE_URL` | `http://127.0.0.1:8030/v1` | 润色 API |
