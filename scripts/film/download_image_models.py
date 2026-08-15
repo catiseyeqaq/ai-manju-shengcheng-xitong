@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Download realistic image-generation weights from ModelScope for ComfyUI.
 
-Runtime weights land under models (local disk);  is backup only
-per MODEL_LOCATIONS_20260810.md.
+Runtime weights land under the local model root (local disk); the shared backup
+volume is fallback only, per MODEL_LOCATIONS_20260810.md.
 
 Two stacks are fetched:
   - FLUX.2 [dev]  : newest base, multi-reference character locking

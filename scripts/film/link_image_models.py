@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Symlink downloaded image-gen weights into ComfyUI's model folders.
 
-Weights stay on local disk under models; ComfyUI only gets symlinks so a
-single copy is shared and  stays a pure backup.
+Weights stay on local disk under the model root; ComfyUI only gets symlinks so a
+single copy is shared and the backup volume stays a pure fallback.
 """
 
 from __future__ import annotations

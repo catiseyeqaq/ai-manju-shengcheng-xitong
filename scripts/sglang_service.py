@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Shared helpers for ComfyUI prompt-polish SGLang (Qwen3.6-35B-A3B full bf16).
 
-Runtime weights must live under models (local disk).  is backup only.
+Runtime weights must live under the local model root (local disk). The shared backup volume is fallback only.
 """
 
 from __future__ import annotations
