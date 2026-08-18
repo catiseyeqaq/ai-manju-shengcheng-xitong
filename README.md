@@ -39,13 +39,13 @@
 
 | 镜头 1 · 咖啡馆外 | 镜头 2 · 雨夜街头 |
 |:---:|:---:|
-| <img src="showcase/frames/01_cafe_00001_.png" width="420" /> | <img src="showcase/frames/02_walk_00001_.png" width="420" /> |
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/01_cafe_00001_.png" width="420" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/02_walk_00001_.png" width="420" /> |
 
 场景一致性底版（film_coherent 管线产出，用于多镜头场景统一）：
 
 | 咖啡馆 | 街道 | 市场 |
 |:---:|:---:|:---:|
-| <img src="showcase/frames/plate_cafe.png" width="280" /> | <img src="showcase/frames/plate_street.png" width="280" /> | <img src="showcase/frames/plate_market.png" width="280" /> |
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_cafe.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_street.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_market.png" width="280" /> |
 
 ---
 
