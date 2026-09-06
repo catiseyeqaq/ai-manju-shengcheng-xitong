@@ -1,21 +1,39 @@
-MIT License
+保留所有权利 / ALL RIGHTS RESERVED
 
-Copyright (c) 2026 catiseyeqaq (YuXuanLin)
+版权所有 (c) 2026 蔺宇轩 (catiseyeqaq)。保留所有权利。
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+本仓库仅作为个人作品集与能力展示用途（供评审、面试或学术评价时查阅）。
+本仓库不是开源项目，未授予任何形式的开源许可。
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+未经权利人明确书面许可，禁止：
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. 复制、分发、镜像或以任何方式传播本仓库的全部或部分内容；
+2. 修改、翻译、反编译，或基于本仓库内容创作衍生作品；
+3. 将本仓库的全部或部分内容用于任何商业目的，包括但不限于产品化、
+   对外提供服务、再销售，或集成到任何第三方系统；
+4. 将本仓库内容用于训练或改进任何机器学习模型；
+5. 移除或更改本声明及任何版权、署名标识。
+
+仅为评审、面试或学术评价目的，允许在线浏览本仓库、在作品中引用，
+以及链接至本仓库地址。
+
+本仓库不提供模型权重、数据集、私有素材、API 凭据或任何运行环境。
+在未获得权利人书面授权的情况下，本仓库内容不具备可运行性。
+
+如需授权、合作或获取可运行版本，请联系权利人。
+
+--------------------------------------------------------------------------------
+
+Copyright (c) 2026 YuXuanLin (catiseyeqaq). All rights reserved.
+
+This repository is provided for portfolio and capability demonstration only.
+It is NOT open source, and no license is granted to use, copy, modify,
+distribute, sublicense, or create derivative works from any part of it.
+Viewing, citing, and linking to this repository for review or evaluation
+purposes are permitted.
+
+Model weights, datasets, private assets, API credentials and runtime
+environments are NOT provided; the contents are not runnable without the
+author's written authorization.
+
+For licensing, collaboration, or a runnable version, please contact the author.
