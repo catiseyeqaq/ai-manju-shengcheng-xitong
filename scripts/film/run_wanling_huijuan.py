@@ -18,7 +18,7 @@ import uuid
 from pathlib import Path
 
 sys.path.insert(0, "ComfyUI/scripts")
-from run_after_school_road_60s import (  # noqa: E402
+from film_pipeline_base import (  # noqa: E402
     FFMPEG,
     H3_A,
     H3_B,
@@ -377,6 +377,7 @@ def stage_still(scene: int, force: bool = False) -> Path:
     g = flux_graph(
         cfg["still"], stem, W, H, int(cfg.get("still_steps", STILL_STEPS)), cfg["seed"],
         backend="majic", pulid_ref=cfg.get("pulid"), face=False, upscale=False,
+        out_dir="wanling_huijuan",
     )
     if cfg.get("pulid_weight") and "54" in g:
         g["54"]["inputs"]["weight"] = float(cfg["pulid_weight"])

@@ -8,7 +8,7 @@ import uuid
 from pathlib import Path
 
 sys.path.insert(0, "ComfyUI/scripts")
-from run_after_school_road_60s import (  # noqa: E402
+from film_pipeline_base import (  # noqa: E402
     H3_A,
     ensure_h3_workers,
     frames_for_duration,

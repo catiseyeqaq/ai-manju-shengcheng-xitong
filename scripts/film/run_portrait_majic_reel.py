@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, "ComfyUI/scripts")
-from run_after_school_road_60s import (  # noqa: E402
+from film_pipeline_base import (  # noqa: E402
     FFMPEG,
     FFPROBE,
     H3_A,

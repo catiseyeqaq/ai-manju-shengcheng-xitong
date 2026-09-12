@@ -224,7 +224,7 @@ flowchart LR
 | [`workflows/大师_06_角色写真_图生视频.json`](workflows/大师_06_角色写真_图生视频.json) | 角色写真图生视频 |
 | [`workflows/大师_API_连贯链路注解.json`](workflows/大师_API_连贯链路注解.json) | API 格式连贯链路注解（供脚本调度） |
 
-配套文档：[`workflows/README_大师工作流使用说明.txt`](workflows/README_大师工作流使用说明.txt)、[`workflows/放学路上_60s_分镜与提示词包.md`](workflows/放学路上_60s_分镜与提示词包.md)（60 秒短片分镜实例）、[`workflows/给GPT_制片管线使用说明.md`](workflows/给GPT_制片管线使用说明.md)（制片管线对接说明）
+配套文档：[`workflows/README_大师工作流使用说明.txt`](workflows/README_大师工作流使用说明.txt)、[`workflows/给GPT_制片管线使用说明.md`](workflows/给GPT_制片管线使用说明.md)（制片管线对接说明）
 
 在 ComfyUI 中：`Load` → 选择上述 JSON → 修改提示词 / 分辨率 / 上传参考图 → `Queue Prompt`。
 
