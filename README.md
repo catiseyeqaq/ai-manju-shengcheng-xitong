@@ -32,6 +32,9 @@
 | --- | --- | --- |
 | 《story · rain day v2》 | 由本系统 T2V/I2V 工作流产出的镜头素材拼接而成（含音轨） | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
 | 《万灵绘卷 · 琴书画》 | 古风琴书画三幕，H3 首尾帧接戏 + 48k 音画对齐拼接（6 个分镜） | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
+| 《放学路上》 | 校园写实短剧，10 分镜连贯叙事（教室 → 走廊 → 放学路），H3 音画同出，1920×1088 / 66s | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
+| 《夜行光影》 | 夜景人像三镜短片，暖调街灯与霓虹光斑，1920×896 / 20s | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
+| 《雨夜回眸》 | 竖屏人像六镜，雨夜街道反射与浅景深，768×1152 / 28s | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
 
 > 生成素材版权归原作者所有，未经授权不得转载或商用。
 
@@ -46,6 +49,18 @@
 | 咖啡馆 | 街道 | 市场 |
 |:---:|:---:|:---:|
 | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_cafe.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_street.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_market.png" width="280" /> |
+
+写实短剧《放学路上》关键帧（10 分镜连贯短剧，同一角色跨镜头）：
+
+| 教室 · 开场 | 走廊 · 动作 | 结尾 · 情绪落点 |
+|:---:|:---:|:---:|
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/03_school_class_00001_.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/04_school_corridor_00001_.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/05_school_ending_00001_.png" width="280" /> |
+
+人像光影短片关键帧（夜景人像与雨夜竖屏）：
+
+| 夜行光影 · 街道霓虹 | 雨夜回眸 · 竖屏 |
+|:---:|:---:|
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/06_portrait_night_glow_00001_.png" width="420" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/07_rain_night_glance_00001_.png" width="210" /> |
 
 ---
 
