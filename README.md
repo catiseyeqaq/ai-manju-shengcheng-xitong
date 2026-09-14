@@ -17,7 +17,7 @@
 当前阶段已具备：
 
 - MiniMax-H3 BF16 权重本地加载（约 129G）
-- 33 套可直接导入的模板工作流：视频 T2V / I2V / R2V、电影级关键帧/分镜/连贯片管线、「大师」六件套，以及《万灵绘卷》琴书画系列、QwenImage / FLUX2 出图、洗图改图与室内效果图管线
+- 9 套可直接导入的模板工作流：H3 视频（T2V / 首尾帧 I2V / 角色写真）、麦橘人物与 QwenImage 出图、中文润色全链路，以及写实短剧《城市雨夜漫步》首尾帧 I2V
 - ComfyUI `0.31.0` 一键启停脚本（含 PPU 加速参数与注意力后端切换）
 - 基于 SGLang 的 Qwen3.6-35B-A3B 提示词润色自定义节点（已接入 MiniMax 官方 H3 提示词写作技能）
 - 写实短剧全链：majicFlus 人物出图 + PuLID 跨镜脸锁 + FaceDetailer/USDU 画质链 + H3 首尾帧接戏 + 48k 音画对齐拼接（见 [`docs/production-asset-inventory.md`](docs/production-asset-inventory.md)）
@@ -170,64 +170,37 @@ flowchart LR
 - 额外模型路径：`configs/extra_model_paths.yaml`
 - 自定义节点：`custom_nodes/minimax_h3_prompt_polish`（`MiniMax H3 提示词润色 (Qwen)`），内置 MiniMax 官方 H3 提示词写作技能参考（`skills/references/`），按模式（T2VA/I2VA/FL2VA/L2VA/Ref2VA）套用官方字段名、镜头标记与音频段落规范改写提示词
 
-### 模板工作流（33 个）
-
-#### 《万灵绘卷》琴书画系列（古风短剧生产链）
-
-| 文件 | 用途 |
-|---|---|
-| [`workflows/万灵绘卷_S01_抚琴近景.json`](workflows/万灵绘卷_S01_抚琴近景.json) | S01 抚琴近景关键帧出图 |
-| [`workflows/万灵绘卷_S01_抚琴图生视频.json`](workflows/万灵绘卷_S01_抚琴图生视频.json) | S01 抚琴镜头图生视频 |
-| [`workflows/万灵绘卷_S02_仙庭全景.json`](workflows/万灵绘卷_S02_仙庭全景.json) | S02 仙庭全景空镜 |
-| [`workflows/万灵绘卷_S02_拉远庭院.json`](workflows/万灵绘卷_S02_拉远庭院.json) | S02 拉远运镜镜头 |
-| [`workflows/万灵绘卷_S03_男女对弈.json`](workflows/万灵绘卷_S03_男女对弈.json) | S03 男女对弈双人镜头 |
-| [`workflows/万灵绘卷_S03_对弈图生视频.json`](workflows/万灵绘卷_S03_对弈图生视频.json) | S03 对弈镜头图生视频 |
+### 模板工作流（9 套）
 
 #### 视频生成（MiniMax-H3）
 
 | 文件 | 用途 |
 |---|---|
-| [`workflows/H3_文生视频.json`](workflows/H3_文生视频.json) | H3 文生视频（带音轨） |
+| [`workflows/H3_文生视频.json`](workflows/H3_文生视频.json) | H3 文生视频（带音轨 + Turbo 8 步） |
 | [`workflows/H3_图生视频_首尾帧.json`](workflows/H3_图生视频_首尾帧.json) | H3 首尾帧 I2VA 接戏镜头 |
-| [`workflows/H3_角色写真_图生视频.json`](workflows/H3_角色写真_图生视频.json) | 角色写真图生视频 |
-| [`workflows/video_minimax_h3_t2v_bf16.json`](workflows/video_minimax_h3_t2v_bf16.json) / [`i2v`](workflows/video_minimax_h3_i2v_bf16.json) / [`r2v`](workflows/video_minimax_h3_r2v_bf16.json) | H3 官方模板（BF16） |
-| [`workflows/video_minimax_h3_t2v.json`](workflows/video_minimax_h3_t2v.json) | H3 文生视频（通用版） |
-| [`workflows/h3_text_prompt_keyframe_video_bf16.json`](workflows/h3_text_prompt_keyframe_video_bf16.json) | 电影级关键帧分镜管线 |
+| [`workflows/H3_角色写真_图生视频.json`](workflows/H3_角色写真_图生视频.json) | 角色写真图生视频（只接首帧） |
 
 #### 出图与改图
 
 | 文件 | 用途 |
 |---|---|
 | [`workflows/麦橘人物_文生图.json`](workflows/麦橘人物_文生图.json) | 麦橘人物文生图 + PuLID 脸锁 |
-| [`workflows/全链路_中文润色_麦橘_H3.json`](workflows/全链路_中文润色_麦橘_H3.json) | 中文润色 → 麦橘出图 → H3 全链路 |
-| [`workflows/FLUX2_空镜场景板.json`](workflows/FLUX2_空镜场景板.json) | FLUX.2 高光感场景空镜板 |
-| [`workflows/FLUX2_文生图练习.json`](workflows/FLUX2_文生图练习.json) | FLUX.2 文生图练习模板 |
-| [`workflows/QwenImage2512_文生图.json`](workflows/QwenImage2512_文生图.json) | QwenImage 2512 文生图 |
+| [`workflows/QwenImage2512_文生图.json`](workflows/QwenImage2512_文生图.json) | QwenImage 2512 本地文生图 |
 | [`workflows/QwenImage3_文生图_云端.json`](workflows/QwenImage3_文生图_云端.json) / [`图生图`](workflows/QwenImage3_图生图_云端.json) | QwenImage3 云端文生图 / 图生图 |
-| [`workflows/洗图_反推_FLUX2图改图.json`](workflows/洗图_反推_FLUX2图改图.json) | 洗图反推 + FLUX2 图改图 |
-| [`workflows/室内效果图_毛胚平面改图.json`](workflows/室内效果图_毛胚平面改图.json) | 毛胚平面改图出室内效果图 |
-| [`workflows/film_zh2prompt_flux_h3.json`](workflows/film_zh2prompt_flux_h3.json) | 中文草稿转影视级提示词并出图 |
-| [`workflows/film_master_zh_prompt_flux_face_upscale_h3.json`](workflows/film_master_zh_prompt_flux_face_upscale_h3.json) | 电影级母版出图（含面部修复与高清放大） |
 
-#### 连贯片与注解
+#### 全链路
 
 | 文件 | 用途 |
 |---|---|
-| [`workflows/film_coherent_photoreal_chain.json`](workflows/film_coherent_photoreal_chain.json) | 连贯片生产链注解（写实短剧主路径） |
+| [`workflows/全链路_中文润色_麦橘_H3.json`](workflows/全链路_中文润色_麦橘_H3.json) | 中文草稿 → 润色 → 麦橘出图 → 修脸放大 → H3 |
 
-#### 「大师」六件套（写实短剧标准生产链）
+#### 项目工作流
 
 | 文件 | 用途 |
 |---|---|
-| [`workflows/大师_01_文字生图_麦橘人物_PuLID.json`](workflows/大师_01_文字生图_麦橘人物_PuLID.json) | 麦橘人物文生图 + PuLID 脸锁（角色圣经） |
-| [`workflows/大师_02_场景板_FLUX2空镜.json`](workflows/大师_02_场景板_FLUX2空镜.json) | FLUX.2 高光感场景空镜板 |
-| [`workflows/大师_03_图生视频_H3_首尾帧.json`](workflows/大师_03_图生视频_H3_首尾帧.json) | H3 首尾帧 I2VA 接戏镜头 |
-| [`workflows/大师_04_文生视频_H3.json`](workflows/大师_04_文生视频_H3.json) | H3 文生视频（带音轨） |
-| [`workflows/大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json`](workflows/大师_05_全链路_中文润色_麦橘_修脸_放大_H3.json) | 全链路母版：中文润色 → 麦橘出图 → 修脸 → 放大 → H3 |
-| [`workflows/大师_06_角色写真_图生视频.json`](workflows/大师_06_角色写真_图生视频.json) | 角色写真图生视频 |
-| [`workflows/大师_API_连贯链路注解.json`](workflows/大师_API_连贯链路注解.json) | API 格式连贯链路注解（供脚本调度） |
+| [`workflows/城市雨夜漫步_图生视频_首尾帧.json`](workflows/城市雨夜漫步_图生视频_首尾帧.json) | 写实短剧《城市雨夜漫步》首尾帧 I2V |
 
-配套文档：[`workflows/README_大师工作流使用说明.txt`](workflows/README_大师工作流使用说明.txt)、[`workflows/给GPT_制片管线使用说明.md`](workflows/给GPT_制片管线使用说明.md)（制片管线对接说明）
+配套文档：[`workflows/README_工作流使用说明.txt`](workflows/README_工作流使用说明.txt)、[`workflows/给GPT_制片管线使用说明.md`](workflows/给GPT_制片管线使用说明.md)（制片管线对接说明）、[`workflows/README_城市雨夜漫步_工作流使用说明.md`](workflows/README_城市雨夜漫步_工作流使用说明.md)（项目工作流详解）
 
 在 ComfyUI 中：`Load` → 选择上述 JSON → 修改提示词 / 分辨率 / 上传参考图 → `Queue Prompt`。
 
@@ -248,7 +221,7 @@ ai-manju-shengcheng-xitong/
 ├── .gitignore
 ├── configs/
 │   └── extra_model_paths.yaml      # MiniMax-H3 路径注册示例
-├── workflows/                      # 34 套模板工作流（万灵绘卷系列 + 视频 + 出图改图 + 连贯片 + 城市雨夜漫步图生视频）
+├── workflows/                      # 9 套模板工作流（H3 视频 / 麦橘 / Qwen 出图 / 全链路 / 城市雨夜漫步）+ 使用说明
 ├── showcase/                       # 成果展示（预览静帧 + 数秒动图；均为低分辨率预览，不含原始素材）
 ├── scripts/                        # ComfyUI / SGLang 启停与注册
 │   ├── film/                       # 写实短剧自动化（24 个：公共管线库/万灵绘卷出片/人物圣经/首尾帧链/RAM守卫/48k拼接/洗图与室内管线）
@@ -315,7 +288,7 @@ python scripts/comfyui_start.py
 
 ### 5. 导入工作流并出片
 
-加载 `workflows/video_minimax_h3_*.json`，用润色节点处理中文草稿后排队生成。
+加载 `workflows/H3_文生视频.json` 等模板，用润色节点处理中文草稿后排队生成。
 
 常用环境变量（可按需覆盖）：
 
@@ -343,7 +316,7 @@ python scripts/comfyui_start.py
 
 ## 路线图（简）
 
-- [x] MiniMax-H3 BF16 本地部署与三套模板工作流
+- [x] MiniMax-H3 BF16 本地部署与模板工作流
 - [x] Qwen 提示词润色节点 + SGLang 服务脚本
 - [ ] 漫剧分镜批处理与镜头级队列
 - [ ] 角色 / 场景资产库与一致性管线
