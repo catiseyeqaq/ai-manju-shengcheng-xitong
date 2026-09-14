@@ -6,7 +6,7 @@
 
 面向 **AI 出图 / 出视频 / 电影级写实短片生成** 的本地部署工程。基于 [ComfyUI](https://github.com/Comfy-Org/ComfyUI) 工作流框架，集成 **MiniMax-H3** 音视频联合生成模型，并配套 **Qwen3.6** 提示词润色服务，支持文生视频（T2V）、图生视频（I2V）、参考生视频（R2V）。
 
-> 仓库定位：部署配置、模板工作流、运维脚本与项目文档。**不包含** 百 GB 级模型权重与完整 ComfyUI 上游源码（请按文档自行拉取）。
+> 仓库定位：部署配置、模板工作流、运维脚本与项目文档。**不包含** 百 GB 级模型权重、完整 ComfyUI 上游源码（请按文档自行拉取），也**不提供**完整成片与原始工程素材——[成果展示](#成果展示) 仅为低分辨率预览。
 
 ---
 
@@ -26,34 +26,37 @@
 
 ## 成果展示
 
-完整成片（1080p / 含音轨）发布在 **GitHub Releases**，不进入仓库 Git 历史，避免仓库体积随版本迭代膨胀：
+写实短剧《城市雨夜漫步》——雨夜城市街道、单角色、暖调霓虹与湿面反射，全片由本系统 **首尾帧双控 I2V + MiniMax-H3** 链路产出（24fps，音画同出）。
 
-| 成片 | 说明 | 下载 |
-| --- | --- | --- |
-| 《story · rain day v2》 | 由本系统 T2V/I2V 工作流产出的镜头素材拼接而成（含音轨） | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
-| 《万灵绘卷 · 琴书画》 | 古风琴书画三幕，H3 首尾帧接戏 + 48k 音画对齐拼接（6 个分镜） | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
-| 《夜行光影》 | 夜景人像三镜短片，暖调街灯与霓虹光斑，1920×896 / 20s | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
-| 《雨夜回眸》 | 竖屏人像六镜，雨夜街道反射与浅景深，768×1152 / 28s | [Release 下载](https://github.com/catiseyeqaq/ai-manju-shengcheng-xitong/releases/tag/showcase-videos) |
+> **关于素材**：以下为**预览级素材**（压缩静帧 + 数秒动图），仅用于展示画面风格与镜头质感。
+> **完整成片不公开、不随仓库分发**；仓库内不含任何原始工程素材、人物参考图与完整视频文件。
 
-> 生成素材版权归原作者所有，未经授权不得转载或商用。
+### 精选静帧
 
-电影级关键帧（film_coherent 连贯片管线产出，同一角色跨镜头）：
-
-| 镜头 1 · 咖啡馆外 | 镜头 2 · 雨夜街头 |
-|:---:|:---:|
-| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/01_cafe_00001_.png" width="420" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/02_walk_00001_.png" width="420" /> |
-
-场景一致性底版（film_coherent 管线产出，用于多镜头场景统一）：
-
-| 咖啡馆 | 街道 | 市场 |
+| 雨夜空街 · 场景定调 | 街头行走 · 人物入画 | 橱窗经过 · 浅景深 |
 |:---:|:---:|:---:|
-| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_cafe.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_street.png" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/plate_market.png" width="280" /> |
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/01_rain_night_street.jpg" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/02_walking_street.jpg" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/03_window_pass.jpg" width="280" /> |
 
-人像光影短片关键帧（夜景人像与雨夜竖屏）：
+| 全身转身 · 中景 | 回眸 · 暖光 | 回眸 · 暗调 |
+|:---:|:---:|:---:|
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/04_fullbody_turn.jpg" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/05_glance_back_warm.jpg" width="280" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/06_glance_back_dark.jpg" width="280" /> |
 
-| 夜行光影 · 街道霓虹 | 雨夜回眸 · 竖屏 |
+| 角色定妆 · 竖构图 | 双眼特写 · 情绪落点 |
 |:---:|:---:|
-| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/03_portrait_night_glow_00001_.png" width="420" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/frames/04_rain_night_glance_00001_.png" width="210" /> |
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/07_character_master.jpg" width="190" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/stills/08_eyes_closeup.jpg" width="430" /> |
+
+### 动态预览（各约 3 秒，静音循环）
+
+| 开场 · 雨夜行走 | 背影 · 街景推移 |
+|:---:|:---:|
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/motion/motion_01_walk_start.webp" width="320" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/motion/motion_02_walk_back.webp" width="320" /> |
+
+| 唇部特写 · 暗调 | 收尾 · 回眸 |
+|:---:|:---:|
+| <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/motion/motion_03_lips_closeup.webp" width="320" /> | <img src="https://cdn.jsdelivr.net/gh/catiseyeqaq/ai-manju-shengcheng-xitong@main/showcase/motion/motion_04_glance_back.webp" width="320" /> |
+
+> 全部素材版权归作者所有；**未经授权不得转载、二次分发或用于任何商业用途**。
+> 展示素材均为低分辨率预览，仓库不提供原始文件。
 
 ---
 
@@ -245,10 +248,10 @@ ai-manju-shengcheng-xitong/
 ├── .gitignore
 ├── configs/
 │   └── extra_model_paths.yaml      # MiniMax-H3 路径注册示例
-├── workflows/                      # 33 套模板工作流（万灵绘卷系列 + 视频 + 出图改图 + 连贯片）
-├── showcase/                       # 成果展示（关键帧/场景底版；完整成片见 GitHub Releases）
+├── workflows/                      # 34 套模板工作流（万灵绘卷系列 + 视频 + 出图改图 + 连贯片 + 城市雨夜漫步图生视频）
+├── showcase/                       # 成果展示（预览静帧 + 数秒动图；均为低分辨率预览，不含原始素材）
 ├── scripts/                        # ComfyUI / SGLang 启停与注册
-│   ├── film/                       # 写实短剧自动化（29 个：万灵绘卷出片/人物圣经/首尾帧链/RAM守卫/48k拼接/洗图与室内管线）
+│   ├── film/                       # 写实短剧自动化（24 个：公共管线库/万灵绘卷出片/人物圣经/首尾帧链/RAM守卫/48k拼接/洗图与室内管线）
 │   ├── comfyui_start.py
 │   ├── comfyui_start_bg.py
 │   ├── comfyui_stop.py

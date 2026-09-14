@@ -1,6 +1,6 @@
 # 满居 ComfyUI 制片管线 · 给 GPT 的使用说明
 
-> 环境：8×PPU（约 96GB/卡）· ComfyUI v0.31 · 主 UI `http://10.100.18.193:8188`  
+> 环境：8×PPU（约 96GB/卡）· ComfyUI v0.31 · 主 UI `http://<服务器地址>:8188`  
 > 启动：`python ComfyUI/scripts/start_studio_4gpu.py`  
 > UI 工作流目录：Load → 只保留 `大师_01`～`大师_05`
 
@@ -147,7 +147,7 @@
 python ComfyUI/scripts/start_studio_4gpu.py
 ```
 
-浏览器：`http://10.100.18.193:8188`
+浏览器：`http://<服务器地址>:8188`
 
 ---
 
